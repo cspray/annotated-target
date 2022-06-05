@@ -6,6 +6,7 @@ use Cspray\AnnotatedTarget\Exception\InvalidArgumentException;
 use Cspray\AnnotatedTargetFixture\ClassOnly;
 use Cspray\AnnotatedTargetFixture\ClassOnlyFixtures;
 use Cspray\AnnotatedTargetFixture\Fixture;
+use Cspray\AnnotatedTargetFixture\MethodOnly;
 use function Cspray\Typiphy\objectType;
 
 it('throws exception if directories is empty', function() {
@@ -46,3 +47,12 @@ it('has populated filterAttributes in options')
             ->build();
         return $options->getAttributeTypes();
     })->toBe([objectType(ClassOnly::class)]);
+
+it('has populated filterAttributes in options, when chained')
+    ->expect(function() {
+        $options = AnnotatedTargetParserOptionsBuilder::scanDirectories(ClassOnlyFixtures::singleClass()->getPath())
+            ->filterAttributes(objectType(ClassOnly::class))
+            ->filterAttributes(objectType(MethodOnly::class))
+            ->build();
+        return $options->getAttributeTypes();
+    })->toBe([objectType(ClassOnly::class), objectType(MethodOnly::class)]);

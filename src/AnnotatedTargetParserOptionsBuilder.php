@@ -33,7 +33,7 @@ final class AnnotatedTargetParserOptionsBuilder {
             throw new InvalidArgumentException('The Attributes to filter by must not be empty.');
         }
         $instance = clone $this;
-        $instance->attributes = [...$attributes];
+        $instance->attributes = [...$this->attributes, ...$attributes];
         return $instance;
     }
 
