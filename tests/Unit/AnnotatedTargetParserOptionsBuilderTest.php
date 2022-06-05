@@ -20,12 +20,23 @@ it('throws exception if attributes is empty', function() {
     AnnotatedTargetParserOptionsBuilder::scanDirectories(ClassOnlyFixtures::singleClass()->getPath())->filterAttributes();
 })->throws(InvalidArgumentException::class, 'The Attributes to filter by must not be empty.');
 
-it('has scan directories in options path')
-    ->expect(fn() => AnnotatedTargetParserOptionsBuilder::scanDirectories(ClassOnlyFixtures::singleClass()->getPath())->build()->getSourceDirectories())
+it('has scan directories in options')
+    ->expect(function() {
+        $options = AnnotatedTargetParserOptionsBuilder::scanDirectories(ClassOnlyFixtures::singleClass()->getPath())->build();
+        return $options->getSourceDirectories();
+    })
     ->toBe([ClassOnlyFixtures::singleClass()->getPath()]);
 
-it('has different instances for filterAttributes', function() {
+it('has different instance for filterAttributes', function() {
     $builder = AnnotatedTargetParserOptionsBuilder::scanDirectories(ClassOnlyFixtures::singleClass()->getPath());
     $filterBuilder = $builder->filterAttributes(objectType(ClassOnly::class));
-    expect($builder)->not()->toBe($filterBuilder);
+    expect($builder)->not->toBe($filterBuilder);
 });
+
+it('has filterAttributes in options')
+    ->expect(function() {
+        $options = AnnotatedTargetParserOptionsBuilder::scanDirectories(ClassOnlyFixtures::singleClass()->getPath())
+            ->filterAttributes(objectType(ClassOnly::class))
+            ->build();
+        return $options->getAttributeTypes();
+    })->toBe([ClassOnlyFixtures::singleClass()->fooClass()]);
