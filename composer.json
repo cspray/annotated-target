@@ -1,0 +1,27 @@
+{
+  "name": "cspray/annotated-target",
+  "description": "A PHP 8 library for statically parsing Attributes using PHP-Parser.",
+  "require": {
+    "php": "^8.1",
+    "nikic/php-parser": "^v4.14"
+  },
+  "require-dev": {
+    "pestphp/pest": "^v1.21"
+  },
+  "autoload": {
+    "psr-4": {
+      "Cspray\\AnnotatedTarget\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Cspray\\AnnotatedTarget\\": "tests",
+      "Cspray\\AnnotatedTargetFixture\\": "fixture_src"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": false
+    }
+  }
+}
