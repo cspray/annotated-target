@@ -7,6 +7,7 @@ use Cspray\AnnotatedTarget\AnnotatedTargetParserOptionsBuilder;
 use Cspray\AnnotatedTarget\PhpParserAnnotatedTargetParser;
 use Cspray\AnnotatedTargetFixture\Fixture;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
 abstract class AnnotatedTargetParserTestCase extends TestCase {
 
@@ -32,6 +33,10 @@ abstract class AnnotatedTargetParserTestCase extends TestCase {
 
     public function assertTargetTypes() : void {
         expect($this->getTargets())->each->toBeInstanceOf(AnnotatedTarget::class);
+    }
+
+    public function assertIncludesTargetReflectionClass(ReflectionClass $expected) : void {
+        expect($this->getTargets());
     }
 
 }
