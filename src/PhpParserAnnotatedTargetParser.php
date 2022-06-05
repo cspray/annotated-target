@@ -2,6 +2,7 @@
 
 namespace Cspray\AnnotatedTarget;
 
+use Cspray\AnnotatedTargetFixture\ClassOnlyFixtures;
 use Generator;
 use ReflectionAttribute;
 use ReflectionClass;
@@ -12,7 +13,7 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
         yield new class implements AnnotatedTarget {
 
             public function getTargetReflection() : ReflectionClass {
-                // TODO: Implement getTargetReflection() method.
+                return new ReflectionClass(ClassOnlyFixtures::singleClass()->fooClass()->getName());
             }
 
             public function getAttributeReflection() : ReflectionAttribute {

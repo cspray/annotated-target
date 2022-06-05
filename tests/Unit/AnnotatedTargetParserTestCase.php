@@ -36,7 +36,9 @@ abstract class AnnotatedTargetParserTestCase extends TestCase {
     }
 
     public function assertIncludesTargetReflectionClass(ReflectionClass $expected) : void {
-        expect($this->getTargets());
+        expect($this->getTargets())->toContainAny(
+            fn(AnnotatedTarget $item) => $item->getTargetReflection()->getName() === $expected->getName()
+        );
     }
 
 }
