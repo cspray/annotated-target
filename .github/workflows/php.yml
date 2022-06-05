@@ -18,7 +18,6 @@ jobs:
         with:
           php_version: 8
       - name: PHP 8 tests
-        uses: php-actions/phpunit@v2
+        run: ./vendor/bin/pest
         with:
-          version: 9
           php_version: 8
