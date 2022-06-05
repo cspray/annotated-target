@@ -10,6 +10,7 @@ use Cspray\Typiphy\ObjectType;
 final class AnnotatedTargetParserOptionsBuilder {
 
     private array $directories = [];
+    private array $attributes = [];
 
     private function __construct() {}
 
@@ -32,20 +33,21 @@ final class AnnotatedTargetParserOptionsBuilder {
             throw new InvalidArgumentException('The Attributes to filter by must not be empty.');
         }
         $instance = clone $this;
+        $instance->attributes = [...$attributes];
         return $instance;
     }
 
     public function build() : AnnotatedTargetParserOptions {
-        return new class($this->directories) implements AnnotatedTargetParserOptions {
+        return new class($this->directories, $this->attributes) implements AnnotatedTargetParserOptions {
 
-            public function __construct(private readonly array $directories) {}
+            public function __construct(private readonly array $directories, private readonly array $attributes) {}
 
             public function getSourceDirectories() : array {
                 return $this->directories;
             }
 
             public function getAttributeTypes() : array {
-                return [ClassOnlyFixtures::singleClass()->fooClass()];
+                return $this->attributes;
             }
         };
     }

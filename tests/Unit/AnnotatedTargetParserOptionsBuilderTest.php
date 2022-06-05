@@ -33,10 +33,16 @@ it('has different instance for filterAttributes', function() {
     expect($builder)->not->toBe($filterBuilder);
 });
 
-it('has filterAttributes in options')
+it('has empty filterAttributes in options')
+    ->expect(function() {
+        $options = AnnotatedTargetParserOptionsBuilder::scanDirectories(ClassOnlyFixtures::singleClass()->getPath())->build();
+        return $options->getAttributeTypes();
+    })->toBeEmpty();
+
+it('has populated filterAttributes in options')
     ->expect(function() {
         $options = AnnotatedTargetParserOptionsBuilder::scanDirectories(ClassOnlyFixtures::singleClass()->getPath())
             ->filterAttributes(objectType(ClassOnly::class))
             ->build();
         return $options->getAttributeTypes();
-    })->toBe([ClassOnlyFixtures::singleClass()->fooClass()]);
+    })->toBe([objectType(ClassOnly::class)]);
