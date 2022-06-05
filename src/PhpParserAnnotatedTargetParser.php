@@ -6,8 +6,8 @@ use Generator;
 
 final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
 
-    public function parser(AnnotatedTargetParserOptions $options) : Generator {
-        // TODO: Implement parser() method.
+    public function parse(AnnotatedTargetParserOptions $options) : Generator {
+        yield;
     }
 
 }

@@ -6,6 +6,6 @@ use Generator;
 
 interface AnnotatedTargetParser {
 
-    public function parser(AnnotatedTargetParserOptions $options) : Generator;
+    public function parse(AnnotatedTargetParserOptions $options) : Generator;
 
 }
