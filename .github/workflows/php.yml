@@ -12,12 +12,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Composer 8
-        uses: php-actions/composer@v5
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup PHP 8
+        uses: shivammathur/setup-php@v2
         with:
-          php_version: 8
-      - name: PHP 8 tests
-        run: ./vendor/bin/pest
-        with:
-          php_version: 8
+          php-version: 8.1
+          tools: composer:v2
+          coverage: none
+      - name: Composer Install
+        run: composer update --no-interaction --no-progress --ansi
+      - name: Unit Tests
+        run: php bin/pest --colors=always
