@@ -23,4 +23,4 @@ jobs:
       - name: Composer Install
         run: composer update --no-interaction --no-progress --ansi
       - name: Unit Tests
-        run: /vendor/bin/pest --colors=always
+        run: ./vendor/bin/pest --colors=always
