@@ -9,7 +9,13 @@ final class AnnotatedTargetParserOptionsBuilder {
     private function __construct() {}
 
     public static function scanDirectories(string... $dirs) : self {
-        throw new InvalidArgumentException('The directories to scan must not include an empty value.');
+        foreach ($dirs as $dir) {
+            if (empty($dir)) {
+                throw new InvalidArgumentException('The directories to scan must not include an empty value.');
+            } else if (!is_dir($dir)) {
+                throw new InvalidArgumentException(sprintf("The value '%s' is not a directory.", $dir));
+            }
+        }
     }
 
     public function withAttributeTypes() : self {
