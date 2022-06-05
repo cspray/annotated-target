@@ -3,6 +3,7 @@
 namespace Cspray\AnnotatedTarget;
 
 use Cspray\AnnotatedTarget\Exception\InvalidArgumentException;
+use Cspray\Typiphy\ObjectType;
 
 final class AnnotatedTargetParserOptionsBuilder {
 
@@ -24,8 +25,8 @@ final class AnnotatedTargetParserOptionsBuilder {
         return $instance;
     }
 
-    public function withAttributeTypes() : self {
-
+    public function filterAttributes(ObjectType... $objectType) : self {
+        throw new InvalidArgumentException('The Attributes to filter by must not be empty.');
     }
 
     public function build() : AnnotatedTargetParserOptions {
