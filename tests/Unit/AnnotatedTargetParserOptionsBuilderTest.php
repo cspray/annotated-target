@@ -23,3 +23,9 @@ it('throws exception if attributes is empty', function() {
 it('has scan directories in options path')
     ->expect(fn() => AnnotatedTargetParserOptionsBuilder::scanDirectories(ClassOnlyFixtures::singleClass()->getPath())->build()->getSourceDirectories())
     ->toBe([ClassOnlyFixtures::singleClass()->getPath()]);
+
+it('has different instances for filterAttributes', function() {
+    $builder = AnnotatedTargetParserOptionsBuilder::scanDirectories(ClassOnlyFixtures::singleClass()->getPath());
+    $filterBuilder = $builder->filterAttributes(objectType(ClassOnly::class));
+    expect($builder)->not()->toBe($filterBuilder);
+});

@@ -25,8 +25,12 @@ final class AnnotatedTargetParserOptionsBuilder {
         return $instance;
     }
 
-    public function filterAttributes(ObjectType... $objectType) : self {
-        throw new InvalidArgumentException('The Attributes to filter by must not be empty.');
+    public function filterAttributes(ObjectType... $attributes) : self {
+        if (empty($attributes)) {
+            throw new InvalidArgumentException('The Attributes to filter by must not be empty.');
+        }
+        $instance = clone $this;
+        return $instance;
     }
 
     public function build() : AnnotatedTargetParserOptions {
