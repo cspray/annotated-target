@@ -6,16 +6,22 @@ use Cspray\AnnotatedTarget\Exception\InvalidArgumentException;
 
 final class AnnotatedTargetParserOptionsBuilder {
 
+    private array $directories = [];
+
     private function __construct() {}
 
     public static function scanDirectories(string... $dirs) : self {
+        $instance = new self;
         foreach ($dirs as $dir) {
             if (empty($dir)) {
                 throw new InvalidArgumentException('The directories to scan must not include an empty value.');
             } else if (!is_dir($dir)) {
                 throw new InvalidArgumentException(sprintf("The value '%s' is not a directory.", $dir));
             }
+
+            $instance->directories[] = $dir;
         }
+        return $instance;
     }
 
     public function withAttributeTypes() : self {
@@ -23,7 +29,18 @@ final class AnnotatedTargetParserOptionsBuilder {
     }
 
     public function build() : AnnotatedTargetParserOptions {
+        return new class($this->directories) implements AnnotatedTargetParserOptions {
 
+            public function __construct(private readonly array $directories) {}
+
+            public function getSourceDirectories() : array {
+                return $this->directories;
+            }
+
+            public function getAttributeTypes() : array {
+                // TODO: Implement getAttributeTypes() method.
+            }
+        };
     }
 
 }
