@@ -22,8 +22,36 @@
 |
 */
 
+use PHPUnit\Framework\Assert;
+
 expect()->extend('toBeOne', function () {
     return $this->toBe(1);
+});
+
+expect()->extend('toContainAny', function(callable $callable, string $message = null) {
+    if (!is_iterable($this->value)) {
+        throw new BadMethodCallException('Expectation value is not iterable.');
+    }
+
+    if (empty($this->value)) {
+        Assert::fail($message ?? 'Failed asserting that any item in expected iterable passes callable.');
+    }
+
+    $contains = false;
+    foreach ($this->value as $item) {
+        if ($callable($item)) {
+            $contains = true;
+            break;
+        }
+    }
+
+    if (!$contains) {
+        Assert::fail('Failed asserting that any item in expected iterable passes callable.');
+    }
+
+    // We need to increment the Assert count to pass PHPUnit's assert count check
+    Assert::assertTrue(true);
+    return $this;
 });
 
 /*
