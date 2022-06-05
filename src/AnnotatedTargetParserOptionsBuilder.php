@@ -3,8 +3,6 @@
 namespace Cspray\AnnotatedTarget;
 
 use Cspray\AnnotatedTarget\Exception\InvalidArgumentException;
-use Cspray\AnnotatedTargetFixture\ClassOnlyAttributeSingleClass\FooClass;
-use Cspray\AnnotatedTargetFixture\ClassOnlyFixtures;
 use Cspray\Typiphy\ObjectType;
 
 final class AnnotatedTargetParserOptionsBuilder {
