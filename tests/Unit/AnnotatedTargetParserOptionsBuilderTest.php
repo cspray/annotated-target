@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Cspray\AnnotatedTarget;
+namespace Cspray\AnnotatedTarget\Unit;
 
+use Cspray\AnnotatedTarget\AnnotatedTargetParserOptionsBuilder;
 use Cspray\AnnotatedTarget\Exception\InvalidArgumentException;
 use Cspray\AnnotatedTargetFixture\ClassOnly;
 use Cspray\AnnotatedTargetFixture\Fixtures;
-use Cspray\AnnotatedTargetFixture\Fixture;
 use Cspray\AnnotatedTargetFixture\MethodOnly;
 use function Cspray\Typiphy\objectType;
 

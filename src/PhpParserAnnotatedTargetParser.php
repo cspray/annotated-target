@@ -56,22 +56,21 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
             public function leaveNode(Node $node) {
                 if ($node instanceof Node\Stmt\Class_) {
                     /** @var Node\AttributeGroup $attr */
-                    foreach ($node->attrGroups as $attrGroup) {
+                    foreach ($node->attrGroups as $index => $attrGroup) {
                         foreach ($attrGroup->attrs as $attr) {
-                            ($this->consumer)($this->getAnnotatedTargetFromClassNode($node, $attr));
+                            ($this->consumer)($this->getAnnotatedTargetFromClassNode($node, $index));
                         }
                     }
                 }
             }
 
-            private function getAnnotatedTargetFromClassNode(Node\Stmt\Class_ $class, Node\Attribute $attribute) : AnnotatedTarget {
+            private function getAnnotatedTargetFromClassNode(Node\Stmt\Class_ $class, int $index) : AnnotatedTarget {
                 $classType = objectType($class->namespacedName->toString());
-                $attributeType = objectType($attribute->name->toString());
-                return new class($classType, $attributeType) implements AnnotatedTarget {
+                return new class($classType, $index) implements AnnotatedTarget {
 
                     public function __construct(
                         private readonly ObjectType $classType,
-                        private readonly ObjectType $attributeType
+                        private readonly int $index
                     ) {}
 
                     public function getTargetReflection() : ReflectionClass {
@@ -79,7 +78,7 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
                     }
 
                     public function getAttributeReflection() : ReflectionAttribute {
-                        return $this->getTargetReflection()->getAttributes()[0];
+                        return $this->getTargetReflection()->getAttributes()[$this->index];
                     }
 
                     public function getAttributeInstance() : object {

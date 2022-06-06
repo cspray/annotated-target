@@ -14,4 +14,8 @@ final class Fixtures {
         return new RepeatableClassOnlyAttributeSingleFixture();
     }
 
+    public static function multipleDifferentClassOnlyAttributeSingleClass() : MultipleDifferentClassOnlyAttributeSingleClassFixture {
+        return new MultipleDifferentClassOnlyAttributeSingleClassFixture();
+    }
+
 }

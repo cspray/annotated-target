@@ -8,7 +8,6 @@ use Cspray\AnnotatedTarget\PhpParserAnnotatedTargetParser;
 use Cspray\AnnotatedTargetFixture\Fixture;
 use Cspray\Typiphy\ObjectType;
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 
 abstract class AnnotatedTargetParserTestCase extends TestCase {
 

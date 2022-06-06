@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Cspray\AnnotatedTarget;
+namespace Cspray\AnnotatedTarget\Unit;
 
 use PHPUnit\Framework\AssertionFailedError;
 
