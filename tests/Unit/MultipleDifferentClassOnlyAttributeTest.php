@@ -15,6 +15,12 @@ it('counts targets for single class')->assertTargetCount(3);
 
 it('ensures all targets are correct types')->assertTargetTypes();
 
+it('ensures all targets share target reflection')->assertTargetReflectionShared();
+
+it('ensures all targets share attribute reflection')->assertAttributeReflectionShared();
+
+it('ensures all targets share attribute instance')->assertAttributeInstanceShared();
+
 it('includes target reflection class')
     ->assertContainsTargetReflectionClassType(Fixtures::multipleDifferentClassOnlyAttributeSingleClass()->fooClass());
 

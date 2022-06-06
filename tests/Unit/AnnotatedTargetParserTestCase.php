@@ -57,6 +57,39 @@ abstract class AnnotatedTargetParserTestCase extends TestCase {
         );
     }
 
+    public function assertTargetReflectionShared() : void {
+        expect($this->getTargets())->each(function($expectation) {
+            /** @var AnnotatedTarget $target */
+            $target = $expectation->value;
+            $first = $target->getTargetReflection();
+            $second = $target->getTargetReflection();
+
+            $this->assertSame($first, $second);
+        });
+    }
+
+    public function assertAttributeReflectionShared() : void {
+        expect($this->getTargets())->each(function($expectation) {
+            /** @var AnnotatedTarget $target */
+            $target = $expectation->value;
+            $first = $target->getAttributeReflection();
+            $second = $target->getAttributeReflection();
+
+            $this->assertSame($first, $second);
+        });
+    }
+
+    public function assertAttributeInstanceShared() : void {
+        expect($this->getTargets())->each(function($expectation) {
+            /** @var AnnotatedTarget $target */
+            $target = $expectation->value;
+            $first = $target->getAttributeInstance();
+            $second = $target->getAttributeInstance();
+
+            $this->assertSame($first, $second);
+        });
+    }
+
     private function passesTargetAndAttributeTypeCheck(AnnotatedTarget $target, ObjectType $expectedTarget, ObjectType $expectedAttribute) : bool {
         return $target->getTargetReflection()->getName() === $expectedTarget->getName() &&
             $target->getAttributeReflection()->getName() === $expectedAttribute->getName();

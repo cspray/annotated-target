@@ -68,21 +68,34 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
                 $classType = objectType($class->namespacedName->toString());
                 return new class($classType, $index) implements AnnotatedTarget {
 
+                    private ReflectionClass $reflectionClass;
+                    private ReflectionAttribute $reflectionAttribute;
+                    private object $attribute;
+
                     public function __construct(
                         private readonly ObjectType $classType,
                         private readonly int $index
                     ) {}
 
                     public function getTargetReflection() : ReflectionClass {
-                        return new ReflectionClass($this->classType->getName());
+                        if (!isset($this->reflectionClass)) {
+                            $this->reflectionClass = new ReflectionClass($this->classType->getName());
+                        }
+                        return $this->reflectionClass;
                     }
 
                     public function getAttributeReflection() : ReflectionAttribute {
-                        return $this->getTargetReflection()->getAttributes()[$this->index];
+                        if (!isset($this->reflectionAttribute)) {
+                            $this->reflectionAttribute = $this->getTargetReflection()->getAttributes()[$this->index];
+                        }
+                        return $this->reflectionAttribute;
                     }
 
                     public function getAttributeInstance() : object {
-                        return $this->getAttributeReflection()->newInstance();
+                        if (!isset($this->attribute)) {
+                            $this->attribute = $this->getAttributeReflection()->newInstance();
+                        }
+                        return $this->attribute;
                     }
                 };
             }
