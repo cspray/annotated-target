@@ -51,6 +51,13 @@ abstract class AnnotatedTargetParserTestCase extends TestCase {
         );
     }
 
+    public function containsTargetReflectionClassConstant(ObjectType $expected, string $constName) : void {
+        expect($this->getTargets())->toContainAny(
+            fn(AnnotatedTarget $item) => $item->getTargetReflection()->getDeclaringClass()->getName() === $expected->getName() &&
+                $item->getTargetReflection()->getName() === $constName
+        );
+    }
+
     public function containsTargetReflectionClassAndReflectionAttribute(ObjectType $expectedTarget, ObjectType $expectedAttribute) : void {
         expect($this->getTargets())->toContainAny(
             fn(AnnotatedTarget $item) => $this->passesTargetAndAttributeTypeCheck($item, $expectedTarget, $expectedAttribute)
@@ -61,6 +68,14 @@ abstract class AnnotatedTargetParserTestCase extends TestCase {
         expect($this->getTargets())->toContainAny(
             fn(AnnotatedTarget $item) => $item->getTargetReflection()->getDeclaringClass()->getName() === $expectedTarget->getName() &&
                 $item->getTargetReflection()->getName() === $expectedProp &&
+                $item->getAttributeReflection()->getName() === $expectedAttribute->getName()
+        );
+    }
+
+    public function containsTargetReflectionClassConstantAndReflectionAttribute(ObjectType $expectedTarget, string $expectedConst, ObjectType $expectedAttribute) : void {
+        expect($this->getTargets())->toContainAny(
+            fn(AnnotatedTarget $item) => $item->getTargetReflection()->getDeclaringClass()->getName() === $expectedTarget->getName() &&
+                $item->getTargetReflection()->getName() === $expectedConst &&
                 $item->getAttributeReflection()->getName() === $expectedAttribute->getName()
         );
     }
@@ -86,6 +101,20 @@ abstract class AnnotatedTargetParserTestCase extends TestCase {
     ) : void {
         expect($this->getTargets())->toContainAny(
             fn(AnnotatedTarget $item) => $this->passesTargetAndAttributeTypeCheck($item, $expectedTarget, $expectedAttribute) && $callable($item->getAttributeInstance())
+        );
+    }
+
+    public function containsReflectionClassConstantReflectionAttributeAndAttributeInstance(
+        ObjectType $expectedTarget,
+        string $expectedConstName,
+        ObjectType $expectedAttribute,
+        callable $callable
+    ) {
+        expect($this->getTargets())->toContainAny(
+            fn(AnnotatedTarget $target) => $target->getTargetReflection()->getDeclaringClass()->getName() === $expectedTarget->getName() &&
+                $target->getTargetReflection()->getName() === $expectedConstName &&
+                $target->getAttributeReflection()->getName() === $expectedAttribute->getName() &&
+                $callable($target->getAttributeInstance())
         );
     }
 

@@ -34,4 +34,16 @@ final class Fixtures {
         return new ClassOnlyAttributeGroupSingleClassFixture();
     }
 
+    public static function constantOnlyAttributeGroupSingleClass() : ConstantOnlyAttributeGroupSingleClassFixture {
+        return new ConstantOnlyAttributeGroupSingleClassFixture();
+    }
+
+    public static function repeatableConstantOnlyAttributeSingleClass() : RepeatableConstantOnlyAttributeSingleClassFixture {
+        return new RepeatableConstantOnlyAttributeSingleClassFixture();
+    }
+
+    public static function singleAttributeMultipleConstantsSingleClass() : SingleAttributeMultipleConstantsSingleClassFixture {
+        return new SingleAttributeMultipleConstantsSingleClassFixture();
+    }
+
 }
