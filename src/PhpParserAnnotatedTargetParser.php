@@ -2,7 +2,6 @@
 
 namespace Cspray\AnnotatedTarget;
 
-use Cspray\Typiphy\ObjectType;
 use Generator;
 use PhpParser\Node;
 use PhpParser\NodeTraverser;
@@ -13,7 +12,6 @@ use PhpParser\ParserFactory;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionProperty;
-use function Cspray\Typiphy\objectType;
 
 final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
 
@@ -58,13 +56,11 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
                 if ($node instanceof Node\Stmt\Class_ || $node instanceof Node\Stmt\Property) {
                     /** @var Node\AttributeGroup $attr */
                     foreach ($node->attrGroups as $index => $attrGroup) {
-                        foreach ($attrGroup->attrs as $attr) {
-                            if ($node instanceof Node\Stmt\Class_) {
-                                ($this->consumer)($this->getAnnotatedTargetFromClassNode($node, $index));
-                            } else if ($node instanceof Node\Stmt\Property) {
-                                foreach ($node->props as $prop) {
-                                    ($this->consumer)($this->getAnnotatedTargetFromPropertyNode($prop));
-                                }
+                        if ($node instanceof Node\Stmt\Class_) {
+                            ($this->consumer)($this->getAnnotatedTargetFromClassNode($node, $index));
+                        } else if ($node instanceof Node\Stmt\Property) {
+                            foreach ($node->props as $prop) {
+                                ($this->consumer)($this->getAnnotatedTargetFromPropertyNode($prop, $index));
                             }
                         }
                     }
@@ -76,10 +72,10 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
                 return $this->getAnnotatedTarget(fn() => new ReflectionClass($classType), $index);
             }
 
-            private function getAnnotatedTargetFromPropertyNode(Node\Stmt\PropertyProperty $property) : AnnotatedTarget {
+            private function getAnnotatedTargetFromPropertyNode(Node\Stmt\PropertyProperty $property, int $index) : AnnotatedTarget {
                 $classType = $property->getAttribute('parent')->getAttribute('parent')->namespacedName->toString();
                 $propertyName = $property->name->toString();
-                return $this->getAnnotatedTarget(fn() => new ReflectionProperty($classType, $propertyName), 0);
+                return $this->getAnnotatedTarget(fn() => new ReflectionProperty($classType, $propertyName), $index);
             }
 
             private function getAnnotatedTarget(callable $reflectorSupplier, int $index) : AnnotatedTarget {

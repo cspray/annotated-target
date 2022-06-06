@@ -18,6 +18,9 @@ abstract class AnnotatedTargetParserTestCase extends TestCase {
     }
 
     private function getTargets() : array {
+        if (!isset($this->fixture)) {
+            throw new \BadMethodCallException('Before running any assertions on this test case you must provide a Fixture to load.');
+        }
         $options = AnnotatedTargetParserOptionsBuilder::scanDirectories($this->fixture->getPath())->build();
         return iterator_to_array($this->getSubject()->parse($options));
     }

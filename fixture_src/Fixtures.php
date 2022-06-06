@@ -26,4 +26,8 @@ final class Fixtures {
         return new SingleAttributeMultiplePropertiesSingleClassFixture();
     }
 
+    public static function repeatablePropertyOnlyAttributeSingleClass() : RepeatablePropertyOnlyAttributeSingleClassFixture {
+        return new RepeatablePropertyOnlyAttributeSingleClassFixture();
+    }
+
 }
