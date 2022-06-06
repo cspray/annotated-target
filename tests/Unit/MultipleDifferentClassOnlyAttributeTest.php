@@ -22,36 +22,36 @@ it('ensures all targets share attribute reflection')->assertAttributeReflectionS
 it('ensures all targets share attribute instance')->assertAttributeInstanceShared();
 
 it('includes target reflection class')
-    ->assertContainsTargetReflectionClassType(Fixtures::multipleDifferentClassOnlyAttributeSingleClass()->fooClass());
+    ->containsTargetReflectionClass(Fixtures::multipleDifferentClassOnlyAttributeSingleClass()->fooClass());
 
 it('includes attribute reflection class for class only')
-    ->assertContainsTargetReflectionClassTypeAndReflectionAttributeType(
+    ->containsTargetReflectionClassAndReflectionAttribute(
         Fixtures::multipleDifferentClassOnlyAttributeSingleClass()->fooClass(),
         objectType(ClassOnly::class)
     );
 
 it('includes attribute reflection class for repeatable class only')
-    ->assertContainsTargetReflectionClassTypeAndReflectionAttributeType(
+    ->containsTargetReflectionClassAndReflectionAttribute(
         Fixtures::multipleDifferentClassOnlyAttributeSingleClass()->fooClass(),
         objectType(RepeatableClassOnly::class)
     );
 
 it('includes attribute instance for class only')
-    ->assertContainsTargetReflectionClassTypeAndValidReflectionAttributeInstance(
+    ->containsReflectionClassReflectionAttributeAndAttributeInstance(
         Fixtures::multipleDifferentClassOnlyAttributeSingleClass()->fooClass(),
         objectType(ClassOnly::class),
         fn(ClassOnly $classOnly) => $classOnly->value === 'foo'
     );
 
 it('includes attribute instance for first repeatable class only')
-    ->assertContainsTargetReflectionClassTypeAndValidReflectionAttributeInstance(
+    ->containsReflectionClassReflectionAttributeAndAttributeInstance(
         Fixtures::multipleDifferentClassOnlyAttributeSingleClass()->fooClass(),
         objectType(RepeatableClassOnly::class),
         fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'bar'
 );
 
 it('includes attribute instance for second repeatable class only')
-    ->assertContainsTargetReflectionClassTypeAndValidReflectionAttributeInstance(
+    ->containsReflectionClassReflectionAttributeAndAttributeInstance(
         Fixtures::multipleDifferentClassOnlyAttributeSingleClass()->fooClass(),
         objectType(RepeatableClassOnly::class),
         fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'baz'

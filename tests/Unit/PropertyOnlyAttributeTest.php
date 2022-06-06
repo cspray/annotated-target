@@ -21,17 +21,17 @@ it('ensures all targets share attribute reflection')->assertAttributeReflectionS
 it('ensures all targets share attribute instance')->assertAttributeInstanceShared();
 
 it('includes target reflection property')
-    ->assertContainsTargetReflectionProperty(
+    ->containsTargetReflectionProperty(
         Fixtures::propertyOnlyAttributeSingleClass()->fooClass(), 'prop'
     );
 
 it('includes attribute reflection property')
-    ->assertContainsTargetReflectionPropertyAndReflectionAttribute(
+    ->containsTargetReflectionPropertyAndReflectionAttribute(
         Fixtures::propertyOnlyAttributeSingleClass()->fooClass(), 'prop', objectType(PropertyOnly::class)
     );
 
 it('includes attribute instance value')
-    ->assertContainsTargetReflectionPropertyAndValidReflectionAttributeInstance(
+    ->containsTargetReflectionPropertyReflectionAttributeAndAttributeInstance(
         Fixtures::propertyOnlyAttributeSingleClass()->fooClass(), 'prop', objectType(PropertyOnly::class),
         fn(PropertyOnly $propertyOnly) => $propertyOnly->value === 'nick'
     );

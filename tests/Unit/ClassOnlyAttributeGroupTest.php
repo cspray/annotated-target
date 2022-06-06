@@ -22,37 +22,37 @@ it('ensures all targets share attribute reflection')->assertAttributeReflectionS
 it('ensures all targets share attribute instance')->assertAttributeInstanceShared();
 
 it('includes target reflection class')
-    ->assertContainsTargetReflectionClassType(Fixtures::classOnlyAttributeGroupSingleClass()->fooClass());
+    ->containsTargetReflectionClass(Fixtures::classOnlyAttributeGroupSingleClass()->fooClass());
 
 it('includes grouped attribute reflection class')
-    ->assertContainsTargetReflectionClassTypeAndReflectionAttributeType(Fixtures::classOnlyAttributeGroupSingleClass()->fooClass(), objectType(RepeatableClassOnly::class));
+    ->containsTargetReflectionClassAndReflectionAttribute(Fixtures::classOnlyAttributeGroupSingleClass()->fooClass(), objectType(RepeatableClassOnly::class));
 
 it('includes single attribute reflection class')
-    ->assertContainsTargetReflectionClassTypeAndReflectionAttributeType(Fixtures::classOnlyAttributeGroupSingleClass()->fooClass(), objectType(ClassOnly::class));
+    ->containsTargetReflectionClassAndReflectionAttribute(Fixtures::classOnlyAttributeGroupSingleClass()->fooClass(), objectType(ClassOnly::class));
 
 it('includes attribute instance with correct first value')
-    ->assertContainsTargetReflectionClassTypeAndValidReflectionAttributeInstance(
+    ->containsReflectionClassReflectionAttributeAndAttributeInstance(
         Fixtures::classOnlyAttributeGroupSingleClass()->fooClass(),
         objectType(RepeatableClassOnly::class),
         fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'foo'
     );
 
 it('includes attribute instance with correct second value')
-    ->assertContainsTargetReflectionClassTypeAndValidReflectionAttributeInstance(
+    ->containsReflectionClassReflectionAttributeAndAttributeInstance(
         Fixtures::classOnlyAttributeGroupSingleClass()->fooClass(),
         objectType(RepeatableClassOnly::class),
         fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'bar'
     );
 
 it('includes ungrouped attribute instance with correct value')
-    ->assertContainsTargetReflectionClassTypeAndValidReflectionAttributeInstance(
+    ->containsReflectionClassReflectionAttributeAndAttributeInstance(
         Fixtures::classOnlyAttributeGroupSingleClass()->fooClass(),
         objectType(ClassOnly::class),
         fn(ClassOnly $classOnly) => $classOnly->value === 'baz'
     );
 
 it('includes attribute instance with correct third value')
-    ->assertContainsTargetReflectionClassTypeAndValidReflectionAttributeInstance(
+    ->containsReflectionClassReflectionAttributeAndAttributeInstance(
         Fixtures::classOnlyAttributeGroupSingleClass()->fooClass(),
         objectType(RepeatableClassOnly::class),
         fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'qux'

@@ -38,26 +38,26 @@ abstract class AnnotatedTargetParserTestCase extends TestCase {
         expect($this->getTargets())->each->toBeInstanceOf(AnnotatedTarget::class);
     }
 
-    public function assertContainsTargetReflectionClassType(ObjectType $expected) : void {
+    public function containsTargetReflectionClass(ObjectType $expected) : void {
         expect($this->getTargets())->toContainAny(
             fn(AnnotatedTarget $item) => $item->getTargetReflection()->getName() === $expected->getName()
         );
     }
 
-    public function assertContainsTargetReflectionProperty(ObjectType $expected, string $propName) : void {
+    public function containsTargetReflectionProperty(ObjectType $expected, string $propName) : void {
         expect($this->getTargets())->toContainAny(
             fn(AnnotatedTarget $item) => $item->getTargetReflection()->getDeclaringClass()->getName() === $expected->getName() &&
                 $item->getTargetReflection()->getName() === $propName
         );
     }
 
-    public function assertContainsTargetReflectionClassTypeAndReflectionAttributeType(ObjectType $expectedTarget, ObjectType $expectedAttribute) : void {
+    public function containsTargetReflectionClassAndReflectionAttribute(ObjectType $expectedTarget, ObjectType $expectedAttribute) : void {
         expect($this->getTargets())->toContainAny(
             fn(AnnotatedTarget $item) => $this->passesTargetAndAttributeTypeCheck($item, $expectedTarget, $expectedAttribute)
         );
     }
 
-    public function assertContainsTargetReflectionPropertyAndReflectionAttribute(ObjectType $expectedTarget, string $expectedProp, ObjectType $expectedAttribute) : void {
+    public function containsTargetReflectionPropertyAndReflectionAttribute(ObjectType $expectedTarget, string $expectedProp, ObjectType $expectedAttribute) : void {
         expect($this->getTargets())->toContainAny(
             fn(AnnotatedTarget $item) => $item->getTargetReflection()->getDeclaringClass()->getName() === $expectedTarget->getName() &&
                 $item->getTargetReflection()->getName() === $expectedProp &&
@@ -65,7 +65,7 @@ abstract class AnnotatedTargetParserTestCase extends TestCase {
         );
     }
 
-    public function assertContainsTargetReflectionPropertyAndValidReflectionAttributeInstance(
+    public function containsTargetReflectionPropertyReflectionAttributeAndAttributeInstance(
         ObjectType $expectedTarget,
         string $expectedProp,
         ObjectType $expectedAttribute,
@@ -74,11 +74,12 @@ abstract class AnnotatedTargetParserTestCase extends TestCase {
         expect($this->getTargets())->toContainAny(
             fn(AnnotatedTarget $item) => $item->getTargetReflection()->getDeclaringClass()->getName() === $expectedTarget->getName() &&
                 $item->getTargetReflection()->getName() === $expectedProp &&
+                $item->getAttributeReflection()->getName() === $expectedAttribute->getName() &&
                 $callable($item->getAttributeInstance())
         );
     }
 
-    public function assertContainsTargetReflectionClassTypeAndValidReflectionAttributeInstance(
+    public function containsReflectionClassReflectionAttributeAndAttributeInstance(
         ObjectType $expectedTarget,
         ObjectType $expectedAttribute,
         callable $callable

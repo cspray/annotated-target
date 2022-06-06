@@ -21,13 +21,13 @@ it('ensures all targets share attribute reflection')->assertAttributeReflectionS
 it('ensures all targets share attribute instance')->assertAttributeInstanceShared();
 
 it('includes target reflection class')
-    ->assertContainsTargetReflectionClassType(Fixtures::classOnlyAttributeSingleClass()->fooClass());
+    ->containsTargetReflectionClass(Fixtures::classOnlyAttributeSingleClass()->fooClass());
 
 it('includes attribute reflection class')
-    ->assertContainsTargetReflectionClassTypeAndReflectionAttributeType(Fixtures::classOnlyAttributeSingleClass()->fooClass(), objectType(ClassOnly::class));
+    ->containsTargetReflectionClassAndReflectionAttribute(Fixtures::classOnlyAttributeSingleClass()->fooClass(), objectType(ClassOnly::class));
 
 it('includes attribute instance with correct value')
-    ->assertContainsTargetReflectionClassTypeAndValidReflectionAttributeInstance(
+    ->containsReflectionClassReflectionAttributeAndAttributeInstance(
         Fixtures::classOnlyAttributeSingleClass()->fooClass(),
         objectType(ClassOnly::class),
         fn(ClassOnly $classOnly) => $classOnly->value === 'single-class-foobar'

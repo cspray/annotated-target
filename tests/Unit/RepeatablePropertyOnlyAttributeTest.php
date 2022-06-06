@@ -20,25 +20,25 @@ it('ensures all targets share attribute reflection')->assertAttributeReflectionS
 
 it('ensures all targets share attribute instance')->assertAttributeInstanceShared();
 
-it('includes target reflection property')->assertContainsTargetReflectionProperty(
+it('includes target reflection property')->containsTargetReflectionProperty(
     Fixtures::repeatablePropertyOnlyAttributeSingleClass()->fooClass(), 'something'
 );
 
-it('includes attribute reflection')->assertContainsTargetReflectionPropertyAndReflectionAttribute(
+it('includes attribute reflection')->containsTargetReflectionPropertyAndReflectionAttribute(
     Fixtures::repeatablePropertyOnlyAttributeSingleClass()->fooClass(), 'something', objectType(RepeatablePropertyOnly::class)
 );
 
-it('includes first attribute instance value')->assertContainsTargetReflectionPropertyAndValidReflectionAttributeInstance(
+it('includes first attribute instance value')->containsTargetReflectionPropertyReflectionAttributeAndAttributeInstance(
     Fixtures::repeatablePropertyOnlyAttributeSingleClass()->fooClass(), 'something', objectType(RepeatablePropertyOnly::class),
     fn(RepeatablePropertyOnly $propertyOnly) => $propertyOnly->value === 'Archer'
 );
 
-it('includes second attribute instance value')->assertContainsTargetReflectionPropertyAndValidReflectionAttributeInstance(
+it('includes second attribute instance value')->containsTargetReflectionPropertyReflectionAttributeAndAttributeInstance(
     Fixtures::repeatablePropertyOnlyAttributeSingleClass()->fooClass(), 'something', objectType(RepeatablePropertyOnly::class),
     fn(RepeatablePropertyOnly $propertyOnly) => $propertyOnly->value === 'Lana'
 );
 
-it('includes third attribute instance value')->assertContainsTargetReflectionPropertyAndValidReflectionAttributeInstance(
+it('includes third attribute instance value')->containsTargetReflectionPropertyReflectionAttributeAndAttributeInstance(
     Fixtures::repeatablePropertyOnlyAttributeSingleClass()->fooClass(), 'something', objectType(RepeatablePropertyOnly::class),
     fn(RepeatablePropertyOnly $propertyOnly) => $propertyOnly->value === 'Ray'
 );
