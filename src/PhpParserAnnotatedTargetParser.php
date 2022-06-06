@@ -62,7 +62,9 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
                             if ($node instanceof Node\Stmt\Class_) {
                                 ($this->consumer)($this->getAnnotatedTargetFromClassNode($node, $index));
                             } else if ($node instanceof Node\Stmt\Property) {
-                                ($this->consumer)($this->getAnnotatedTargetFromPropertyNode($node->props[0]));
+                                foreach ($node->props as $prop) {
+                                    ($this->consumer)($this->getAnnotatedTargetFromPropertyNode($prop));
+                                }
                             }
                         }
                     }
