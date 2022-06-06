@@ -4,7 +4,7 @@ namespace Cspray\AnnotatedTarget;
 
 use Cspray\AnnotatedTarget\Exception\InvalidArgumentException;
 use Cspray\AnnotatedTargetFixture\ClassOnly;
-use Cspray\AnnotatedTargetFixture\ClassOnlyFixtures;
+use Cspray\AnnotatedTargetFixture\Fixtures;
 use Cspray\AnnotatedTargetFixture\Fixture;
 use Cspray\AnnotatedTargetFixture\MethodOnly;
 use function Cspray\Typiphy\objectType;
@@ -18,31 +18,31 @@ it('throws exception if directories is not a directory', function() {
 })->throws(InvalidArgumentException::class, "The value 'not-dir' is not a directory.");
 
 it('throws exception if attributes is empty', function() {
-    AnnotatedTargetParserOptionsBuilder::scanDirectories(ClassOnlyFixtures::singleClass()->getPath())->filterAttributes();
+    AnnotatedTargetParserOptionsBuilder::scanDirectories(Fixtures::classOnlyAttributeSingleClass()->getPath())->filterAttributes();
 })->throws(InvalidArgumentException::class, 'The Attributes to filter by must not be empty.');
 
 it('has scan directories in options')
     ->expect(function() {
-        $options = AnnotatedTargetParserOptionsBuilder::scanDirectories(ClassOnlyFixtures::singleClass()->getPath())->build();
+        $options = AnnotatedTargetParserOptionsBuilder::scanDirectories(Fixtures::classOnlyAttributeSingleClass()->getPath())->build();
         return $options->getSourceDirectories();
     })
-    ->toBe([ClassOnlyFixtures::singleClass()->getPath()]);
+    ->toBe([Fixtures::classOnlyAttributeSingleClass()->getPath()]);
 
 it('has different instance for filterAttributes', function() {
-    $builder = AnnotatedTargetParserOptionsBuilder::scanDirectories(ClassOnlyFixtures::singleClass()->getPath());
+    $builder = AnnotatedTargetParserOptionsBuilder::scanDirectories(Fixtures::classOnlyAttributeSingleClass()->getPath());
     $filterBuilder = $builder->filterAttributes(objectType(ClassOnly::class));
     expect($builder)->not->toBe($filterBuilder);
 });
 
 it('has empty filterAttributes in options')
     ->expect(function() {
-        $options = AnnotatedTargetParserOptionsBuilder::scanDirectories(ClassOnlyFixtures::singleClass()->getPath())->build();
+        $options = AnnotatedTargetParserOptionsBuilder::scanDirectories(Fixtures::classOnlyAttributeSingleClass()->getPath())->build();
         return $options->getAttributeTypes();
     })->toBeEmpty();
 
 it('has populated filterAttributes in options')
     ->expect(function() {
-        $options = AnnotatedTargetParserOptionsBuilder::scanDirectories(ClassOnlyFixtures::singleClass()->getPath())
+        $options = AnnotatedTargetParserOptionsBuilder::scanDirectories(Fixtures::classOnlyAttributeSingleClass()->getPath())
             ->filterAttributes(objectType(ClassOnly::class))
             ->build();
         return $options->getAttributeTypes();
@@ -50,7 +50,7 @@ it('has populated filterAttributes in options')
 
 it('has populated filterAttributes in options, when chained')
     ->expect(function() {
-        $options = AnnotatedTargetParserOptionsBuilder::scanDirectories(ClassOnlyFixtures::singleClass()->getPath())
+        $options = AnnotatedTargetParserOptionsBuilder::scanDirectories(Fixtures::classOnlyAttributeSingleClass()->getPath())
             ->filterAttributes(objectType(ClassOnly::class))
             ->filterAttributes(objectType(MethodOnly::class))
             ->build();
