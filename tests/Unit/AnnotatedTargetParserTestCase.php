@@ -58,6 +58,13 @@ abstract class AnnotatedTargetParserTestCase extends TestCase {
         );
     }
 
+    public function containsTargetReflectionMethod(ObjectType $expected, string $methodName) : void {
+        expect($this->getTargets())->toContainAny(
+            fn(AnnotatedTarget $item) => $item->getTargetReflection()->getDeclaringClass()->getName() === $expected->getName() &&
+                $item->getTargetReflection()->getName() === $methodName
+        );
+    }
+
     public function containsTargetReflectionClassAndReflectionAttribute(ObjectType $expectedTarget, ObjectType $expectedAttribute) : void {
         expect($this->getTargets())->toContainAny(
             fn(AnnotatedTarget $item) => $this->passesTargetAndAttributeTypeCheck($item, $expectedTarget, $expectedAttribute)
@@ -76,6 +83,14 @@ abstract class AnnotatedTargetParserTestCase extends TestCase {
         expect($this->getTargets())->toContainAny(
             fn(AnnotatedTarget $item) => $item->getTargetReflection()->getDeclaringClass()->getName() === $expectedTarget->getName() &&
                 $item->getTargetReflection()->getName() === $expectedConst &&
+                $item->getAttributeReflection()->getName() === $expectedAttribute->getName()
+        );
+    }
+
+    public function containsTargetReflectionMethodAndReflectionAttribute(ObjectType $expectedTarget, string $expectedMethod, ObjectType $expectedAttribute) : void {
+        expect($this->getTargets())->toContainAny(
+            fn(AnnotatedTarget $item) => $item->getTargetReflection()->getDeclaringClass()->getName() === $expectedTarget->getName() &&
+                $item->getTargetReflection()->getName() === $expectedMethod &&
                 $item->getAttributeReflection()->getName() === $expectedAttribute->getName()
         );
     }
@@ -109,10 +124,24 @@ abstract class AnnotatedTargetParserTestCase extends TestCase {
         string $expectedConstName,
         ObjectType $expectedAttribute,
         callable $callable
-    ) {
+    ) : void {
         expect($this->getTargets())->toContainAny(
             fn(AnnotatedTarget $target) => $target->getTargetReflection()->getDeclaringClass()->getName() === $expectedTarget->getName() &&
                 $target->getTargetReflection()->getName() === $expectedConstName &&
+                $target->getAttributeReflection()->getName() === $expectedAttribute->getName() &&
+                $callable($target->getAttributeInstance())
+        );
+    }
+
+    public function containsReflectionMethodReflectionAttributeAndAttributeInstance(
+        ObjectType $expectedTarget,
+        string $expectedMethodName,
+        ObjectType $expectedAttribute,
+        callable $callable
+    ) : void {
+        expect($this->getTargets())->toContainAny(
+            fn(AnnotatedTarget $target) => $target->getTargetReflection()->getDeclaringClass()->getName() === $expectedTarget->getName() &&
+                $target->getTargetReflection()->getName() === $expectedMethodName &&
                 $target->getAttributeReflection()->getName() === $expectedAttribute->getName() &&
                 $callable($target->getAttributeInstance())
         );

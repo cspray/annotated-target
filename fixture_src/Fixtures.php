@@ -46,4 +46,12 @@ final class Fixtures {
         return new SingleAttributeMultipleConstantsSingleClassFixture();
     }
 
+    public static function methodOnlyAttributeSingleClass() : MethodOnlyAttributeSingleClassFixture {
+        return new MethodOnlyAttributeSingleClassFixture();
+    }
+
+    public static function repeatableMethodOnlyAttributeSingleClass() : RepeatableMethodOnlyAttributeSingleClassFixture {
+        return new RepeatableMethodOnlyAttributeSingleClassFixture();
+    }
+
 }
