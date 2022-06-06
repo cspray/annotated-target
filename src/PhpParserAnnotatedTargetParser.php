@@ -55,13 +55,17 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
             public function leaveNode(Node $node) {
                 if ($node instanceof Node\Stmt\Class_ || $node instanceof Node\Stmt\Property) {
                     /** @var Node\AttributeGroup $attr */
-                    foreach ($node->attrGroups as $index => $attrGroup) {
-                        if ($node instanceof Node\Stmt\Class_) {
-                            ($this->consumer)($this->getAnnotatedTargetFromClassNode($node, $index));
-                        } else if ($node instanceof Node\Stmt\Property) {
-                            foreach ($node->props as $prop) {
-                                ($this->consumer)($this->getAnnotatedTargetFromPropertyNode($prop, $index));
+                    $index = 0;
+                    foreach ($node->attrGroups as $attrGroup) {
+                        foreach ($attrGroup->attrs as $attr) {
+                            if ($node instanceof Node\Stmt\Class_) {
+                                ($this->consumer)($this->getAnnotatedTargetFromClassNode($node, $index));
+                            } else if ($node instanceof Node\Stmt\Property) {
+                                foreach ($node->props as $prop) {
+                                    ($this->consumer)($this->getAnnotatedTargetFromPropertyNode($prop, $index));
+                                }
                             }
+                            $index++;
                         }
                     }
                 }

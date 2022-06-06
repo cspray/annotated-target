@@ -30,4 +30,8 @@ final class Fixtures {
         return new RepeatablePropertyOnlyAttributeSingleClassFixture();
     }
 
+    public static function classOnlyAttributeGroupSingleClass() : ClassOnlyAttributeGroupSingleClassFixture {
+        return new ClassOnlyAttributeGroupSingleClassFixture();
+    }
+
 }
