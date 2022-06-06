@@ -18,4 +18,8 @@ final class Fixtures {
         return new MultipleDifferentClassOnlyAttributeSingleClassFixture();
     }
 
+    public static function propertyOnlyAttributeSingleClass() : PropertyOnlyAttributeSingleClassFixture {
+        return new PropertyOnlyAttributeSingleClassFixture();
+    }
+
 }
