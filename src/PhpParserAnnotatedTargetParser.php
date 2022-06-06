@@ -13,6 +13,7 @@ use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionClassConstant;
 use ReflectionMethod;
+use ReflectionParameter;
 use ReflectionProperty;
 
 final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
@@ -56,7 +57,8 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
 
             public function leaveNode(Node $node) {
                 if ($node instanceof Node\Stmt\Class_ || $node instanceof Node\Stmt\Property ||
-                    $node instanceof Node\Stmt\ClassConst || $node instanceof Node\Stmt\ClassMethod) {
+                    $node instanceof Node\Stmt\ClassConst || $node instanceof Node\Stmt\ClassMethod ||
+                    $node instanceof Node\Param) {
                     /** @var Node\AttributeGroup $attr */
                     $index = 0;
                     foreach ($node->attrGroups as $attrGroup) {
@@ -71,8 +73,10 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
                                 foreach ($node->consts as $const) {
                                     ($this->consumer)($this->getAnnotatedTargetFromClassConstantNode($const, $index));
                                 }
-                            } else {
+                            } else if ($node instanceof Node\Stmt\ClassMethod) {
                                 ($this->consumer)($this->getAnnotatedTargetFromMethodNode($node, $index));
+                            } else {
+                                ($this->consumer)($this->getAnnotatedTargetFromMethodParameter($node, $index));
                             }
                             $index++;
                         }
@@ -103,11 +107,18 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
                 return $this->getAnnotatedTarget(fn() => new ReflectionMethod(sprintf('%s::%s', $classType, $methodName)), $index);
             }
 
+            private function getAnnotatedTargetFromMethodParameter(Node\Param $param, int $index) : AnnotatedTarget {
+                $classType = $param->getAttribute('parent')->getAttribute('parent')->namespacedName->toString();
+                $methodName = $param->getAttribute('parent')->name->toString();
+                $paramName = $param->var->name;
+                return $this->getAnnotatedTarget(fn() => new ReflectionParameter([$classType, $methodName], $paramName), $index);
+            }
+
             private function getAnnotatedTarget(callable $reflectorSupplier, int $index) : AnnotatedTarget {
                 return new class($reflectorSupplier, $index) implements AnnotatedTarget {
 
                     private $reflectorSupplier;
-                    private ReflectionClass|ReflectionProperty|ReflectionClassConstant|ReflectionMethod $reflectionClass;
+                    private ReflectionClass|ReflectionProperty|ReflectionClassConstant|ReflectionMethod|ReflectionParameter $reflectionClass;
                     private ReflectionAttribute $reflectionAttribute;
                     private object $attribute;
 
@@ -118,7 +129,7 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
                         $this->reflectorSupplier = $reflectorSupplier;
                     }
 
-                    public function getTargetReflection() : ReflectionClass|ReflectionProperty|ReflectionClassConstant|ReflectionMethod {
+                    public function getTargetReflection() : ReflectionClass|ReflectionProperty|ReflectionClassConstant|ReflectionMethod|ReflectionParameter {
                         if (!isset($this->reflectionClass)) {
                             $this->reflectionClass = ($this->reflectorSupplier)();
                         }

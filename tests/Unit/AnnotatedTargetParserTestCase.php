@@ -65,6 +65,14 @@ abstract class AnnotatedTargetParserTestCase extends TestCase {
         );
     }
 
+    public function containsTargetReflectionMethodParameter(ObjectType $expected, string $methodName, string $paramName) : void {
+        expect($this->getTargets())->toContainAny(
+            fn(AnnotatedTarget $item) => $item->getTargetReflection()->getDeclaringClass()->getName() === $expected->getName() &&
+                $item->getTargetReflection()->getDeclaringFunction()->getName() === $methodName &&
+                $item->getTargetReflection()->getName() === $paramName
+        );
+    }
+
     public function containsTargetReflectionClassAndReflectionAttribute(ObjectType $expectedTarget, ObjectType $expectedAttribute) : void {
         expect($this->getTargets())->toContainAny(
             fn(AnnotatedTarget $item) => $this->passesTargetAndAttributeTypeCheck($item, $expectedTarget, $expectedAttribute)
@@ -91,6 +99,15 @@ abstract class AnnotatedTargetParserTestCase extends TestCase {
         expect($this->getTargets())->toContainAny(
             fn(AnnotatedTarget $item) => $item->getTargetReflection()->getDeclaringClass()->getName() === $expectedTarget->getName() &&
                 $item->getTargetReflection()->getName() === $expectedMethod &&
+                $item->getAttributeReflection()->getName() === $expectedAttribute->getName()
+        );
+    }
+
+    public function containsTargetReflectionParameterAndReflectionAttribute(ObjectType $expectedTarget, string $expectedMethod, string $expectedParam, ObjectType $expectedAttribute) : void {
+        expect($this->getTargets())->toContainAny(
+            fn(AnnotatedTarget $item) => $item->getTargetReflection()->getDeclaringClass()->getName() === $expectedTarget->getName() &&
+                $item->getTargetReflection()->getDeclaringFunction()->getName() === $expectedMethod &&
+                $item->getTargetReflection()->getName() === $expectedParam &&
                 $item->getAttributeReflection()->getName() === $expectedAttribute->getName()
         );
     }
@@ -142,6 +159,22 @@ abstract class AnnotatedTargetParserTestCase extends TestCase {
         expect($this->getTargets())->toContainAny(
             fn(AnnotatedTarget $target) => $target->getTargetReflection()->getDeclaringClass()->getName() === $expectedTarget->getName() &&
                 $target->getTargetReflection()->getName() === $expectedMethodName &&
+                $target->getAttributeReflection()->getName() === $expectedAttribute->getName() &&
+                $callable($target->getAttributeInstance())
+        );
+    }
+
+    public function containsReflectionParameterReflectionAttributeAndAttributeInstance(
+        ObjectType $expectedTarget,
+        string $expectedMethod,
+        string $expectedParam,
+        ObjectType $expectedAttribute,
+        callable $callable
+    ) : void {
+        expect($this->getTargets())->toContainAny(
+            fn(AnnotatedTarget $target) => $target->getTargetReflection()->getDeclaringClass()->getName() === $expectedTarget->getName() &&
+                $target->getTargetReflection()->getDeclaringFunction()->getName() === $expectedMethod &&
+                $target->getTargetReflection()->getName() === $expectedParam &&
                 $target->getAttributeReflection()->getName() === $expectedAttribute->getName() &&
                 $callable($target->getAttributeInstance())
         );

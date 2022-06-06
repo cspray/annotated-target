@@ -54,4 +54,12 @@ final class Fixtures {
         return new RepeatableMethodOnlyAttributeSingleClassFixture();
     }
 
+    public static function parameterOnlyAttributeSingleClass() : ParameterOnlyAttributeSingleClassFixture {
+        return new ParameterOnlyAttributeSingleClassFixture();
+    }
+
+    public static function repeatableParameterOnlyAttributeSingleClass() : RepeatableParameterOnlyAttributeSingleClassFixture {
+        return new RepeatableParameterOnlyAttributeSingleClassFixture();
+    }
+
 }

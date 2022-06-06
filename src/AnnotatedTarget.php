@@ -6,11 +6,12 @@ use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionClassConstant;
 use ReflectionMethod;
+use ReflectionParameter;
 use ReflectionProperty;
 
 interface AnnotatedTarget {
 
-    public function getTargetReflection() : ReflectionClass|ReflectionProperty|ReflectionClassConstant|ReflectionMethod;
+    public function getTargetReflection() : ReflectionClass|ReflectionProperty|ReflectionClassConstant|ReflectionMethod|ReflectionParameter;
 
     public function getAttributeReflection() : ReflectionAttribute;
 
