@@ -17,11 +17,11 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
             }
 
             public function getAttributeReflection() : ReflectionAttribute {
-                // TODO: Implement getAttributeReflection() method.
+                return $this->getTargetReflection()->getAttributes()[0];
             }
 
             public function getAttributeInstance() : object {
-                // TODO: Implement getAttributeInstance() method.
+                return $this->getAttributeReflection()->newInstance();
             }
         };
     }

@@ -3,8 +3,10 @@
 namespace Cspray\AnnotatedTarget;
 
 use Cspray\AnnotatedTarget\Unit\AnnotatedTargetParserTestCase;
+use Cspray\AnnotatedTargetFixture\ClassOnly;
 use Cspray\AnnotatedTargetFixture\ClassOnlyFixtures;
 use ReflectionClass;
+use function Cspray\Typiphy\objectType;
 
 uses(AnnotatedTargetParserTestCase::class);
 
@@ -18,4 +20,16 @@ it('ensures all targets are correct type')
 
 it('includes target reflection class')
     ->withFixture(ClassOnlyFixtures::singleClass())
-    ->assertIncludesTargetReflectionClass(new ReflectionClass(ClassOnlyFixtures::singleClass()->fooClass()->getName()));
+    ->assertContainsTargetReflectionClassType(ClassOnlyFixtures::singleClass()->fooClass());
+
+it('includes attribute reflection class')
+    ->withFixture(ClassOnlyFixtures::singleClass())
+    ->assertContainsTargetReflectionClassTypeAndReflectionAttributeType(ClassOnlyFixtures::singleClass()->fooClass(), objectType(ClassOnly::class));
+
+it('includes attribute instance with correct value')
+    ->withFixture(ClassOnlyFixtures::singleClass())
+    ->assertContainsTargetReflectionClassTypeAndValidReflectionAttributeInstance(
+        ClassOnlyFixtures::singleClass()->fooClass(),
+        objectType(ClassOnly::class),
+        fn(ClassOnly $classOnly) => $classOnly->value === 'single-class-foobar'
+    );
