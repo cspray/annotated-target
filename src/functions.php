@@ -5,6 +5,12 @@ namespace Cspray\AnnotatedTarget;
 use Generator;
 use function Cspray\Typiphy\objectType;
 
+/**
+ * @param array|string $directories
+ * @param array $filterAttributes
+ * @return Generator<AnnotatedTarget>
+ * @throws Exception\InvalidArgumentException
+ */
 function parseAttributes(array|string $directories, array $filterAttributes = []) : Generator {
     $parser = new PhpParserAnnotatedTargetParser();
     $directories = is_string($directories) ? [$directories] : $directories;
