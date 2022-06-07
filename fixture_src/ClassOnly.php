@@ -7,4 +7,8 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS)]
 final class ClassOnly {
 
+    public function __construct(
+        public readonly string $value
+    ) {}
+
 }

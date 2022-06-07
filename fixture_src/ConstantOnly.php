@@ -2,10 +2,8 @@
 
 namespace Cspray\AnnotatedTargetFixture;
 
-use Attribute;
-
-#[Attribute(Attribute::TARGET_METHOD)]
-final class MethodOnly {
+#[\Attribute(\Attribute::TARGET_CLASS_CONSTANT)]
+final class ConstantOnly {
 
     public function __construct(public readonly string $value) {}
 

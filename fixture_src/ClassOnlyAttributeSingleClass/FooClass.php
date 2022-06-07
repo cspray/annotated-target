@@ -4,5 +4,5 @@ namespace Cspray\AnnotatedTargetFixture\ClassOnlyAttributeSingleClass;
 
 use Cspray\AnnotatedTargetFixture\ClassOnly;
 
-#[ClassOnly]
+#[ClassOnly('single-class-foobar')]
 class FooClass {}

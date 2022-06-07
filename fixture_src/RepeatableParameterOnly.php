@@ -2,10 +2,8 @@
 
 namespace Cspray\AnnotatedTargetFixture;
 
-use Attribute;
-
-#[Attribute(Attribute::TARGET_METHOD)]
-final class MethodOnly {
+#[\Attribute(\Attribute::TARGET_PARAMETER | \Attribute::IS_REPEATABLE)]
+class RepeatableParameterOnly {
 
     public function __construct(public readonly string $value) {}
 
