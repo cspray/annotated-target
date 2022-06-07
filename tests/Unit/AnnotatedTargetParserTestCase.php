@@ -17,22 +17,23 @@ use ReflectionProperty;
 
 abstract class AnnotatedTargetParserTestCase extends TestCase {
 
-    private Fixture $fixture;
+    private array $fixtures;
 
     private function getSubject() : PhpParserAnnotatedTargetParser {
         return new PhpParserAnnotatedTargetParser();
     }
 
     private function getTargets() : array {
-        if (!isset($this->fixture)) {
+        if (!isset($this->fixtures)) {
             throw new \BadMethodCallException('Before running any assertions on this test case you must provide a Fixture to load.');
         }
-        $options = AnnotatedTargetParserOptionsBuilder::scanDirectories($this->fixture->getPath())->build();
+        $paths = array_map(fn(Fixture $fixture) => $fixture->getPath(), $this->fixtures);
+        $options = AnnotatedTargetParserOptionsBuilder::scanDirectories(...$paths)->build();
         return iterator_to_array($this->getSubject()->parse($options));
     }
 
-    public function withFixture(Fixture $fixture) : self {
-        $this->fixture = $fixture;
+    public function withFixtures(Fixture... $fixtures) : self {
+        $this->fixtures = $fixtures;
         return $this;
     }
 

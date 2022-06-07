@@ -9,7 +9,7 @@ use function Cspray\Typiphy\objectType;
 
 uses(AnnotatedTargetParserTestCase::class);
 
-beforeEach()->withFixture(Fixtures::repeatableFunctionOnlyAttributeSingleFunction());
+beforeEach()->withFixtures(Fixtures::repeatableFunctionOnlyAttributeSingleFunction());
 
 it('counts targets for repeatable function')->assertTargetCount(2);
 

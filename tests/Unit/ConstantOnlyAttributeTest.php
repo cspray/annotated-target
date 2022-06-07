@@ -9,7 +9,7 @@ use function Cspray\Typiphy\objectType;
 
 uses(AnnotatedTargetParserTestCase::class);
 
-beforeEach()->withFixture(Fixtures::constantOnlyAttributeGroupSingleClass());
+beforeEach()->withFixtures(Fixtures::constantOnlyAttributeGroupSingleClass());
 
 it('counts targets for single constant')->assertTargetCount(1);
 

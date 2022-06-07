@@ -8,7 +8,7 @@ use function Cspray\Typiphy\objectType;
 
 uses(AnnotatedTargetParserTestCase::class);
 
-beforeEach()->withFixture(Fixtures::parameterOnlyAttributeSingleClass());
+beforeEach()->withFixtures(Fixtures::parameterOnlyAttributeSingleClass());
 
 it('counts targets for single parameter')->assertTargetCount(1);
 
