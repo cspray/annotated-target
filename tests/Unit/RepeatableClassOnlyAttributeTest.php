@@ -10,41 +10,58 @@ uses(AnnotatedTargetParserTestCase::class);
 
 beforeEach()->withFixtures(Fixtures::repeatableClassOnlyAttributeSingleClass());
 
-it('counts targets for single class')->assertTargetCount(3);
+$targets = fn() => $this->getTargets();
 
-it('ensures all targets are correct types')->assertTargetTypes();
+it('counts targets for single class')
+    ->expect($targets)
+    ->toHaveCount(3);
 
-it('ensures all targets share target reflection')->assertTargetReflectionShared();
+it('ensures all targets are correct types')
+    ->expect($targets)
+    ->toContainOnlyAnnotatedTargets();
 
-it('ensures all targets share attribute reflection')->assertAttributeReflectionShared();
+it('ensures all targets share target reflection')
+    ->expect($targets)
+    ->toShareTargetReflection();
 
-it('ensures all targets share attribute instance')->assertAttributeInstanceShared();
+it('ensures all targets share attribute reflection')
+    ->expect($targets)
+    ->toShareAttributeReflection();
+
+it('ensures all targets share attribute instance')
+    ->expect($targets)
+    ->toShareAttributeInstance();
 
 it('includes target reflection class')
-    ->containsTargetClass(Fixtures::repeatableClassOnlyAttributeSingleClass()->fooClass());
+    ->expect($targets)
+    ->toContainTargetClass(Fixtures::repeatableClassOnlyAttributeSingleClass()->fooClass());
 
 it('includes attribute reflection class')
-    ->containsTargetClassAndAttribute(
+    ->expect($targets)
+    ->toContainTargetClassWithAttribute(
         Fixtures::repeatableClassOnlyAttributeSingleClass()->fooClass(),
         objectType(RepeatableClassOnly::class)
     );
 
 it('includes first attribute value')
-    ->containsTargetClassAndAttributeInstance(
+    ->expect($targets)
+    ->toContainTargetClassWithAttributeInstance(
         Fixtures::repeatableClassOnlyAttributeSingleClass()->fooClass(),
         objectType(RepeatableClassOnly::class),
         fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'foo'
     );
 
 it('includes second attribute value')
-    ->containsTargetClassAndAttributeInstance(
+    ->expect($targets)
+    ->toContainTargetClassWithAttributeInstance(
         Fixtures::repeatableClassOnlyAttributeSingleClass()->fooClass(),
         objectType(RepeatableClassOnly::class),
         fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'bar'
     );
 
 it('includes third attribute value')
-    ->containsTargetClassAndAttributeInstance(
+    ->expect($targets)
+    ->toContainTargetClassWithAttributeInstance(
         Fixtures::repeatableClassOnlyAttributeSingleClass()->fooClass(),
         objectType(RepeatableClassOnly::class),
         fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'baz'

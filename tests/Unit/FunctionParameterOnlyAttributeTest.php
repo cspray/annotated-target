@@ -10,28 +10,43 @@ uses(AnnotatedTargetParserTestCase::class);
 
 beforeEach()->withFixtures(Fixtures::functionParameterOnlyAttributeSingleFunction());
 
-it('counts targets for single parameter')->assertTargetCount(1);
+$targets = fn() => $this->getTargets();
 
-it('ensures all targets are correct types')->assertTargetTypes();
+it('counts targets for single parameter')
+    ->expect($targets)
+    ->toHaveCount(1);
 
-it('ensures all targets share target reflection')->assertTargetReflectionShared();
+it('ensures all targets are correct types')
+    ->expect($targets)
+    ->toContainOnlyAnnotatedTargets();
 
-it('ensures all targets share attribute reflection')->assertAttributeReflectionShared();
+it('ensures all targets share target reflection')
+    ->expect($targets)
+    ->toShareTargetReflection();
 
-it('ensures all targets share attribute instance')->assertAttributeInstanceShared();
+it('ensures all targets share attribute reflection')
+    ->expect($targets)
+    ->toShareAttributeReflection();
+
+it('ensures all targets share attribute instance')
+    ->expect($targets)
+    ->toShareAttributeInstance();
 
 it('contains target reflection parameter')
-    ->containsTargetFunctionParameter(
+    ->expect($targets)
+    ->toContainTargetFunctionParameter(
         Fixtures::functionParameterOnlyAttributeSingleFunction()->fooFunction(), 'param'
     );
 
 it('contains target reflection and attribute')
-    ->containsTargetFunctionParameterAndAttribute(
+    ->expect($targets)
+    ->toContainTargetFunctionParameterWithAttribute(
         Fixtures::functionParameterOnlyAttributeSingleFunction()->fooFunction(), 'param', objectType(ParameterOnly::class)
     );
 
 it('contains target reflection and attribute instance')
-    ->containsTargetFunctionParameterAndAttributeInstance(
+    ->expect($targets)
+    ->toContainTargetFunctionParameterWithAttributeInstance(
         Fixtures::functionParameterOnlyAttributeSingleFunction()->fooFunction(), 'param', objectType(ParameterOnly::class),
         fn(ParameterOnly $parameterOnly) => $parameterOnly->value === 'awesome'
     );

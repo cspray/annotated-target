@@ -14,24 +14,39 @@ beforeEach()->withFixtures(
     Fixtures::methodOnlyAttributeSingleClass()
 )->withFilteredAttributes(objectType(ClassOnly::class));
 
-it('counts parsed targets for single class')->assertTargetCount(1);
+$targets = fn() => $this->getTargets();
 
-it('ensures all targets are correct type')->assertTargetTypes();
+it('counts parsed targets for single class')
+    ->expect($targets)
+    ->toHaveCount(1);
 
-it('ensures all targets share target reflection')->assertTargetReflectionShared();
+it('ensures all targets are correct type')
+    ->expect($targets)
+    ->toContainOnlyAnnotatedTargets();
 
-it('ensures all targets share attribute reflection')->assertAttributeReflectionShared();
+it('ensures all targets share target reflection')
+    ->expect($targets)
+    ->toShareTargetReflection();
 
-it('ensures all targets share attribute instance')->assertAttributeInstanceShared();
+it('ensures all targets share attribute reflection')
+    ->expect($targets)
+    ->toShareAttributeReflection();
+
+it('ensures all targets share attribute instance')
+    ->expect($targets)
+    ->toShareAttributeInstance();
 
 it('includes target reflection class')
-    ->containsTargetClass(Fixtures::classOnlyAttributeSingleClass()->fooClass());
+    ->expect($targets)
+    ->toContainTargetClass(Fixtures::classOnlyAttributeSingleClass()->fooClass());
 
 it('includes attribute reflection class')
-    ->containsTargetClassAndAttribute(Fixtures::classOnlyAttributeSingleClass()->fooClass(), objectType(ClassOnly::class));
+    ->expect($targets)
+    ->toContainTargetClassWithAttribute(Fixtures::classOnlyAttributeSingleClass()->fooClass(), objectType(ClassOnly::class));
 
 it('includes attribute instance with correct value')
-    ->containsTargetClassAndAttributeInstance(
+    ->expect($targets)
+    ->toContainTargetClassWithAttributeInstance(
         Fixtures::classOnlyAttributeSingleClass()->fooClass(),
         objectType(ClassOnly::class),
         fn(ClassOnly $classOnly) => $classOnly->value === 'single-class-foobar'

@@ -11,28 +11,43 @@ uses(AnnotatedTargetParserTestCase::class);
 
 beforeEach()->withFixtures(Fixtures::methodOnlyAttributeSingleClass());
 
-it('counts targets for single constant')->assertTargetCount(1);
+$targets = fn() => $this->getTargets();
 
-it('ensures all targets are correct types')->assertTargetTypes();
+it('counts targets for single constant')
+    ->expect($targets)
+    ->toHaveCount(1);
 
-it('ensures all targets share target reflection')->assertTargetReflectionShared();
+it('ensures all targets are correct types')
+    ->expect($targets)
+    ->toContainOnlyAnnotatedTargets();
 
-it('ensures all targets share attribute reflection')->assertAttributeReflectionShared();
+it('ensures all targets share target reflection')
+    ->expect($targets)
+    ->toShareTargetReflection();
 
-it('ensures all targets share attribute instance')->assertAttributeInstanceShared();
+it('ensures all targets share attribute reflection')
+    ->expect($targets)
+    ->toShareAttributeReflection();
+
+it('ensures all targets share attribute instance')
+    ->expect($targets)
+    ->toShareAttributeInstance();
 
 it('has target reflection method')
-    ->containsTargetMethod(
+    ->expect($targets)
+    ->toContainTargetMethod(
         Fixtures::methodOnlyAttributeSingleClass()->fooClass(), 'myMethod'
     );
 
 it('has target reflection method and attribute')
-    ->containsTargetMethodAndAttribute(
+    ->expect($targets)
+    ->toContainTargetMethodWithAttribute(
         Fixtures::methodOnlyAttributeSingleClass()->fooClass(), 'myMethod', objectType(MethodOnly::class)
     );
 
 it('has target method and attribute instance')
-    ->containsTargetMethodAndAttributeInstance(
+    ->expect($targets)
+    ->toContainTargetMethodWithAttributeInstance(
         Fixtures::methodOnlyAttributeSingleClass()->fooClass(), 'myMethod', objectType(MethodOnly::class),
         fn(MethodOnly $methodOnly) => $methodOnly->value === 'is the coolest method'
     );

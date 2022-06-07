@@ -10,26 +10,39 @@ uses(AnnotatedTargetParserTestCase::class);
 
 beforeEach()->withFixtures(Fixtures::functionOnlyAttributeSingleFunction());
 
-it('counts targets for single constant')->assertTargetCount(1);
+it('counts targets for single constant')
+    ->expect(fn() => $this->getTargets())
+    ->toHaveCount(1);
 
-it('ensures all targets are correct types')->assertTargetTypes();
+it('ensures all targets are correct types')
+    ->expect(fn() => $this->getTargets())
+    ->toContainOnlyAnnotatedTargets();
 
-it('ensures all targets share target reflection')->assertTargetReflectionShared();
+it('ensures all targets share target reflection')
+    ->expect(fn() => $this->getTargets())
+    ->toShareTargetReflection();
 
-it('ensures all targets share attribute reflection')->assertAttributeReflectionShared();
+it('ensures all targets share attribute reflection')
+    ->expect(fn() => $this->getTargets())
+    ->toShareAttributeReflection();
 
-it('ensures all targets share attribute instance')->assertAttributeInstanceShared();
+it('ensures all targets share attribute instance')
+    ->expect(fn() => $this->getTargets())
+    ->toShareAttributeInstance();
 
 it('contains target reflection function')
-    ->containsTargetFunction(Fixtures::functionOnlyAttributeSingleFunction()->fooFunction());
+    ->expect(fn() => $this->getTargets())
+    ->toContainTargetFunction(Fixtures::functionOnlyAttributeSingleFunction()->fooFunction());
 
 it('contains target reflection function and reflection attribute')
-    ->containsTargetFunctionAndAttribute(
+    ->expect(fn() => $this->getTargets())
+    ->toContainTargetFunctionWithAttribute(
         Fixtures::functionOnlyAttributeSingleFunction()->fooFunction(), objectType(FunctionOnly::class)
     );
 
 it('contains target reflection function and attribute instance')
-    ->containsTargetFunctionAndAttributeInstance(
+    ->expect(fn() => $this->getTargets())
+    ->toContainTargetFunctionWithAttributeInstance(
         Fixtures::functionOnlyAttributeSingleFunction()->fooFunction(), objectType(FunctionOnly::class),
         fn(FunctionOnly $functionOnly) => $functionOnly->value === 'would a crazy person do this?'
     );
