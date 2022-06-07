@@ -75,10 +75,7 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
             }
 
             public function leaveNode(Node $node) {
-                if ($node instanceof Node\Stmt\Class_ || $node instanceof Node\Stmt\Property ||
-                    $node instanceof Node\Stmt\ClassConst || $node instanceof Node\Stmt\ClassMethod ||
-                    $node instanceof Node\Param || $node instanceof Node\Stmt\Function_) {
-                    /** @var Node\AttributeGroup $attr */
+                if (isset($node->attrGroups)) {
                     $index = 0;
                     foreach ($node->attrGroups as $attrGroup) {
                         foreach ($attrGroup->attrs as $attr) {
@@ -100,7 +97,7 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
                                 ($this->consumer)($this->getAnnotatedTargetFromMethodNode($node, $index));
                             } else if ($node instanceof Node\Param) {
                                 ($this->consumer)($this->getAnnotatedTargetFromMethodParameter($node, $index));
-                            } else {
+                            } else if ($node instanceof Node\Stmt\Function_) {
                                 ($this->consumer)($this->getAnnotatedTargetFromFunction($node, $index));
                             }
                             $index++;
