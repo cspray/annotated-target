@@ -4,6 +4,7 @@ namespace Cspray\AnnotatedTarget;
 
 use FilesystemIterator;
 use Generator;
+use Iterator;
 use PhpParser\Node;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor;
@@ -19,6 +20,7 @@ use ReflectionFunction;
 use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionProperty;
+use SplFileInfo;
 
 final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
 
@@ -45,11 +47,17 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
         yield from $data->targets;
     }
 
-    private function getSourceIterator(AnnotatedTargetParserOptions $options) : \Iterator {
+    private function getSourceIterator(AnnotatedTargetParserOptions $options) : Iterator {
         foreach ($options->getSourceDirectories() as $directory) {
-            yield from new RecursiveIteratorIterator(
+            $iterator = new RecursiveIteratorIterator(
                 new RecursiveDirectoryIterator($directory, FilesystemIterator::SKIP_DOTS)
             );
+            /** @var SplFileInfo $file */
+            foreach ($iterator as $file) {
+                if ($file->getExtension() === 'php') {
+                    yield $file;
+                }
+            }
         }
     }
 

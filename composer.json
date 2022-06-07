@@ -22,7 +22,8 @@
     "files": [
       "fixture_src/FunctionOnlyAttributeSingleFunction/foo.php",
       "fixture_src/RepeatableFunctionOnlyAttributeSingleFunction/foo.php",
-      "fixture_src/FunctionParameterOnlyAttributeSingleFunction/foo.php"
+      "fixture_src/FunctionParameterOnlyAttributeSingleFunction/foo.php",
+      "fixture_src/NonPhpFile/BarClass.txt"
     ]
   },
   "config": {

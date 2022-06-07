@@ -74,4 +74,8 @@ final class Fixtures {
         return new FunctionParameterOnlyAttributeSingleFunctionFixture();
     }
 
+    public static function nonPhpFile() : NonPhpFileFixture {
+        return new NonPhpFileFixture();
+    }
+
 }
