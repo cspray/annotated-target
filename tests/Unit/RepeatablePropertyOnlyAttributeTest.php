@@ -10,35 +10,57 @@ uses(AnnotatedTargetParserTestCase::class);
 
 beforeEach()->withFixtures(Fixtures::repeatablePropertyOnlyAttributeSingleClass());
 
-it('counts targets for single class')->assertTargetCount(3);
+$targets = fn() => $this->getTargets();
 
-it('ensures all targets are correct types')->assertTargetTypes();
+it('counts targets for single class')
+    ->expect($targets)
+    ->toHaveCount(3);
 
-it('ensures all targets share target reflection')->assertTargetReflectionShared();
+it('ensures all targets are correct types')
+    ->expect($targets)
+    ->toContainOnlyAnnotatedTargets();
 
-it('ensures all targets share attribute reflection')->assertAttributeReflectionShared();
+it('ensures all targets share target reflection')
+    ->expect($targets)
+    ->toShareTargetReflection();
 
-it('ensures all targets share attribute instance')->assertAttributeInstanceShared();
+it('ensures all targets share attribute reflection')
+    ->expect($targets)
+    ->toShareAttributeReflection();
 
-it('includes target reflection property')->containsTargetProperty(
-    Fixtures::repeatablePropertyOnlyAttributeSingleClass()->fooClass(), 'something'
-);
+it('ensures all targets share attribute instance')
+    ->expect($targets)
+    ->toShareAttributeInstance();
 
-it('includes attribute reflection')->containsTargetPropertyAndAttribute(
-    Fixtures::repeatablePropertyOnlyAttributeSingleClass()->fooClass(), 'something', objectType(RepeatablePropertyOnly::class)
-);
+it('includes target reflection property')
+    ->expect($targets)
+    ->toContainTargetProperty(
+        Fixtures::repeatablePropertyOnlyAttributeSingleClass()->fooClass(), 'something'
+    );
 
-it('includes first attribute instance value')->containsTargetPropertyAndAttributeInstance(
-    Fixtures::repeatablePropertyOnlyAttributeSingleClass()->fooClass(), 'something', objectType(RepeatablePropertyOnly::class),
-    fn(RepeatablePropertyOnly $propertyOnly) => $propertyOnly->value === 'Archer'
-);
+it('includes attribute reflection')
+    ->expect($targets)
+    ->toContainTargetPropertyWithAttribute(
+        Fixtures::repeatablePropertyOnlyAttributeSingleClass()->fooClass(), 'something', objectType(RepeatablePropertyOnly::class)
+    );
 
-it('includes second attribute instance value')->containsTargetPropertyAndAttributeInstance(
-    Fixtures::repeatablePropertyOnlyAttributeSingleClass()->fooClass(), 'something', objectType(RepeatablePropertyOnly::class),
-    fn(RepeatablePropertyOnly $propertyOnly) => $propertyOnly->value === 'Lana'
-);
+it('includes first attribute instance value')
+    ->expect($targets)
+    ->toContainTargetPropertyWithAttributeInstance(
+        Fixtures::repeatablePropertyOnlyAttributeSingleClass()->fooClass(), 'something', objectType(RepeatablePropertyOnly::class),
+        fn(RepeatablePropertyOnly $propertyOnly) => $propertyOnly->value === 'Archer'
+    );
 
-it('includes third attribute instance value')->containsTargetPropertyAndAttributeInstance(
-    Fixtures::repeatablePropertyOnlyAttributeSingleClass()->fooClass(), 'something', objectType(RepeatablePropertyOnly::class),
-    fn(RepeatablePropertyOnly $propertyOnly) => $propertyOnly->value === 'Ray'
-);
+it('includes second attribute instance value')
+    ->expect($targets)
+    ->toContainTargetPropertyWithAttributeInstance(
+        Fixtures::repeatablePropertyOnlyAttributeSingleClass()->fooClass(), 'something', objectType(RepeatablePropertyOnly::class),
+        fn(RepeatablePropertyOnly $propertyOnly) => $propertyOnly->value === 'Lana'
+    );
+
+it('includes third attribute instance value')
+    ->expect($targets)
+    ->toContainTargetPropertyWithAttributeInstance(
+        Fixtures::repeatablePropertyOnlyAttributeSingleClass()->fooClass(), 'something', objectType(RepeatablePropertyOnly::class),
+        fn(RepeatablePropertyOnly $propertyOnly) => $propertyOnly->value === 'Ray'
+    );

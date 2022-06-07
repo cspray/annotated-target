@@ -4,17 +4,13 @@ namespace Cspray\AnnotatedTarget\Unit;
 
 use Cspray\AnnotatedTargetFixture\ClassOnly;
 use Cspray\AnnotatedTargetFixture\Fixtures;
+use function Cspray\AnnotatedTarget\parseAttributes;
 use function Cspray\Typiphy\objectType;
 
-uses(AnnotatedTargetParserTestCase::class);
-
-beforeEach()->withFixtures(
-    Fixtures::classOnlyAttributeSingleClass(),
-    Fixtures::propertyOnlyAttributeSingleClass(),
-    Fixtures::methodOnlyAttributeSingleClass()
-)->withFilteredAttributes(objectType(ClassOnly::class));
-
-$targets = fn() => $this->getTargets();
+$targets = fn() => iterator_to_array(parseAttributes(
+    [Fixtures::classOnlyAttributeSingleClass()->getPath(), Fixtures::propertyOnlyAttributeSingleClass()->getPath(), Fixtures::methodOnlyAttributeSingleClass()->getPath()],
+    [ClassOnly::class])
+);
 
 it('counts parsed targets for single class')
     ->expect($targets)

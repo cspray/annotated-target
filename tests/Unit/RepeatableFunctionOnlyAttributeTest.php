@@ -11,32 +11,48 @@ uses(AnnotatedTargetParserTestCase::class);
 
 beforeEach()->withFixtures(Fixtures::repeatableFunctionOnlyAttributeSingleFunction());
 
-it('counts targets for repeatable function')->assertTargetCount(2);
+$targets = fn() => $this->getTargets();
 
-it('ensures all targets are correct types')->assertTargetTypes();
+it('counts targets for repeatable function')
+    ->expect($targets)
+    ->toHaveCount(2);
 
-it('ensures all targets share target reflection')->assertTargetReflectionShared();
+it('ensures all targets are correct types')
+    ->expect($targets)
+    ->toContainOnlyAnnotatedTargets();
 
-it('ensures all targets share attribute reflection')->assertAttributeReflectionShared();
+it('ensures all targets share target reflection')
+    ->expect($targets)
+    ->toShareTargetReflection();
 
-it('ensures all targets share attribute instance')->assertAttributeInstanceShared();
+it('ensures all targets share attribute reflection')
+    ->expect($targets)
+    ->toShareAttributeReflection();
+
+it('ensures all targets share attribute instance')
+    ->expect($targets)
+    ->toShareAttributeInstance();
 
 it('contains target reflection function')
-    ->containsTargetFunction(Fixtures::repeatableFunctionOnlyAttributeSingleFunction()->fooFunction());
+    ->expect($targets)
+    ->toContainTargetFunction(Fixtures::repeatableFunctionOnlyAttributeSingleFunction()->fooFunction());
 
 it('contains target reflection function and reflection attribute')
-    ->containsTargetFunctionAndAttribute(
+    ->expect($targets)
+    ->toContainTargetFunctionWithAttribute(
         Fixtures::repeatableFunctionOnlyAttributeSingleFunction()->fooFunction(), objectType(RepeatableFunctionOnly::class)
     );
 
 it('contains target reflection function and first attribute instance')
-    ->containsTargetFunctionAndAttributeInstance(
+    ->expect($targets)
+    ->toContainTargetFunctionWithAttributeInstance(
         Fixtures::repeatableFunctionOnlyAttributeSingleFunction()->fooFunction(), objectType(RepeatableFunctionOnly::class),
         fn(RepeatableFunctionOnly $functionOnly) => $functionOnly->value === 'nick'
     );
 
 it('contains target reflection function and second attribute instance')
-    ->containsTargetFunctionAndAttributeInstance(
+    ->expect($targets)
+    ->toContainTargetFunctionWithAttributeInstance(
         Fixtures::repeatableFunctionOnlyAttributeSingleFunction()->fooFunction(), objectType(RepeatableFunctionOnly::class),
         fn(RepeatableFunctionOnly $functionOnly) => $functionOnly->value === 'xoe'
     );

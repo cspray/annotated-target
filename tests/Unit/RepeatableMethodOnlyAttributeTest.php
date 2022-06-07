@@ -12,39 +12,56 @@ uses(AnnotatedTargetParserTestCase::class);
 
 beforeEach()->withFixtures(Fixtures::repeatableMethodOnlyAttributeSingleClass());
 
-it('counts targets for single constant')->assertTargetCount(2);
+$targets = fn() => $this->getTargets();
 
-it('ensures all targets are correct types')->assertTargetTypes();
+it('counts targets for single constant')
+    ->expect($targets)
+    ->toHaveCount(2);
 
-it('ensures all targets share target reflection')->assertTargetReflectionShared();
+it('ensures all targets are correct types')
+    ->expect($targets)
+    ->toContainOnlyAnnotatedTargets();
 
-it('ensures all targets share attribute reflection')->assertAttributeReflectionShared();
+it('ensures all targets share target reflection')
+    ->expect($targets)
+    ->toShareTargetReflection();
 
-it('ensures all targets share attribute instance')->assertAttributeInstanceShared();
+it('ensures all targets share attribute reflection')
+    ->expect($targets)
+    ->toShareAttributeReflection();
+
+it('ensures all targets share attribute instance')
+    ->expect($targets)
+    ->toShareAttributeInstance();
 
 it('contains target reflection method')
-    ->containsTargetMethod(
+    ->expect($targets)
+    ->toContainTargetMethod(
         Fixtures::repeatableMethodOnlyAttributeSingleClass()->fooClass(), 'theirMethod'
     );
 
 it('contains target reflection method and first attribute')
-    ->containsTargetMethodAndAttribute(
+    ->expect($targets)
+    ->toContainTargetMethodWithAttribute(
         Fixtures::repeatableMethodOnlyAttributeSingleClass()->fooClass(), 'theirMethod', objectType(MethodOnly::class)
     );
 
 it('contains target reflection method and second attribute')
-    ->containsTargetMethodAndAttribute(
+    ->expect($targets)
+    ->toContainTargetMethodWithAttribute(
         Fixtures::repeatableMethodOnlyAttributeSingleClass()->fooClass(), 'theirMethod', objectType(RepeatableMethodOnly::class)
     );
 
 it('contains target reflection method and first attribute instance')
-    ->containsTargetMethodAndAttributeInstance(
+    ->expect($targets)
+    ->toContainTargetMethodWithAttributeInstance(
         Fixtures::repeatableMethodOnlyAttributeSingleClass()->fooClass(), 'theirMethod', objectType(MethodOnly::class),
         fn(MethodOnly $methodOnly) => $methodOnly->value === 'methodOnly'
     );
 
 it('contains target reflection method and second attribute instance')
-    ->containsTargetMethodAndAttributeInstance(
+    ->expect($targets)
+    ->toContainTargetMethodWithAttributeInstance(
         Fixtures::repeatableMethodOnlyAttributeSingleClass()->fooClass(), 'theirMethod', objectType(RepeatableMethodOnly::class),
         fn(RepeatableMethodOnly $methodOnly) => $methodOnly->value === 'repeatableMethodOnly'
     );
