@@ -36,7 +36,10 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
         $nodeTraverser->addVisitor(new NodeVisitor\NameResolver());
         $data = new \stdClass();
         $data->targets = [];
-        $nodeTraverser->addVisitor($this->getVisitor(fn($target) => $data->targets[] = $target));
+        $nodeTraverser->addVisitor($this->getVisitor(
+            fn($target) => $data->targets[] = $target,
+            $options->getAttributeTypes()
+        ));
 
         foreach ($this->getSourceIterator($options) as $sourceFile) {
             $nodes = $this->parser->parse(file_get_contents($sourceFile->getPathname()));
@@ -61,12 +64,13 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
         }
     }
 
-    private function getVisitor(callable $consumer) : NodeVisitor {
-        return new class($consumer) extends NodeVisitorAbstract {
+    private function getVisitor(callable $consumer, array $filteredAttributes) : NodeVisitor {
+        $filteredAttributes = array_map(fn($attr) => $attr->getName(), $filteredAttributes);
+        return new class($consumer, $filteredAttributes) extends NodeVisitorAbstract {
 
             private $consumer;
 
-            public function __construct(callable $consumer) {
+            public function __construct(callable $consumer, private readonly array $filteredAttributes) {
                 $this->consumer = $consumer;
             }
 
@@ -78,6 +82,10 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
                     $index = 0;
                     foreach ($node->attrGroups as $attrGroup) {
                         foreach ($attrGroup->attrs as $attr) {
+                            $attrType = $attr->name->toString();
+                            if (!empty($this->filteredAttributes) && !in_array($attrType, $this->filteredAttributes)) {
+                                continue;
+                            }
                             if ($node instanceof Node\Stmt\Class_) {
                                 ($this->consumer)($this->getAnnotatedTargetFromClassNode($node, $index));
                             } else if ($node instanceof Node\Stmt\Property) {
