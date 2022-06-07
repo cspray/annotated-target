@@ -2,6 +2,7 @@
 
 namespace Cspray\AnnotatedTarget;
 
+use FilesystemIterator;
 use Generator;
 use PhpParser\Node;
 use PhpParser\NodeTraverser;
@@ -9,6 +10,8 @@ use PhpParser\NodeVisitor;
 use PhpParser\NodeVisitorAbstract;
 use PhpParser\Parser;
 use PhpParser\ParserFactory;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionClassConstant;
@@ -36,14 +39,18 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
         foreach ($this->getSourceIterator($options) as $sourceFile) {
             $nodes = $this->parser->parse(file_get_contents($sourceFile->getPathname()));
             $nodeTraverser->traverse($nodes);
-            yield from $data->targets;
+            unset($nodes);
         }
+
+        yield from $data->targets;
     }
 
     private function getSourceIterator(AnnotatedTargetParserOptions $options) : \Iterator {
-        return new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($options->getSourceDirectories()[0], \FilesystemIterator::SKIP_DOTS)
-        );
+        foreach ($options->getSourceDirectories() as $directory) {
+            yield from new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($directory, FilesystemIterator::SKIP_DOTS)
+            );
+        }
     }
 
     private function getVisitor(callable $consumer) : NodeVisitor {
