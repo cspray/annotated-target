@@ -22,17 +22,17 @@ it('ensures all targets share attribute reflection')->assertAttributeReflectionS
 it('ensures all targets share attribute instance')->assertAttributeInstanceShared();
 
 it('has target reflection method')
-    ->containsTargetReflectionMethod(
+    ->containsTargetMethod(
         Fixtures::methodOnlyAttributeSingleClass()->fooClass(), 'myMethod'
     );
 
 it('has target reflection method and attribute')
-    ->containsTargetReflectionMethodAndReflectionAttribute(
+    ->containsTargetMethodAndAttribute(
         Fixtures::methodOnlyAttributeSingleClass()->fooClass(), 'myMethod', objectType(MethodOnly::class)
     );
 
-it('has target reflection method and attribute instance')
-    ->containsReflectionClassConstantReflectionAttributeAndAttributeInstance(
+it('has target method and attribute instance')
+    ->containsTargetMethodAndAttributeInstance(
         Fixtures::methodOnlyAttributeSingleClass()->fooClass(), 'myMethod', objectType(MethodOnly::class),
         fn(MethodOnly $methodOnly) => $methodOnly->value === 'is the coolest method'
     );

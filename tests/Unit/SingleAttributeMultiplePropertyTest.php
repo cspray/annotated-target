@@ -21,49 +21,49 @@ it('ensures all targets share attribute reflection')->assertAttributeReflectionS
 it('ensures all targets share attribute instance')->assertAttributeInstanceShared();
 
 it('includes target reflection property for first prop')
-    ->containsTargetReflectionProperty(
+    ->containsTargetProperty(
         Fixtures::singleAttributeMultiplePropertiesSingleClass()->fooClass(),'foo'
     );
 
 it('includes target reflection property for second prop')
-    ->containsTargetReflectionProperty(
+    ->containsTargetProperty(
         Fixtures::singleAttributeMultiplePropertiesSingleClass()->fooClass(), 'bar'
     );
 
 it('includes target reflection property for third prop')
-    ->containsTargetReflectionProperty(
+    ->containsTargetProperty(
         Fixtures::singleAttributeMultiplePropertiesSingleClass()->fooClass(), 'baz'
     );
 
 it('includes attribute reflection class for first prop')
-    ->containsTargetReflectionPropertyAndReflectionAttribute(
+    ->containsTargetPropertyAndAttribute(
         Fixtures::singleAttributeMultiplePropertiesSingleClass()->fooClass(), 'foo', objectType(PropertyOnly::class)
     );
 
 it('includes attribute reflection class for second prop')
-    ->containsTargetReflectionPropertyAndReflectionAttribute(
+    ->containsTargetPropertyAndAttribute(
         Fixtures::singleAttributeMultiplePropertiesSingleClass()->fooClass(), 'bar', objectType(PropertyOnly::class)
     );
 
 it('includes attribute reflection class for third prop')
-    ->containsTargetReflectionPropertyAndReflectionAttribute(
+    ->containsTargetPropertyAndAttribute(
         Fixtures::singleAttributeMultiplePropertiesSingleClass()->fooClass(), 'baz', objectType(PropertyOnly::class)
     );
 
 it('includes attribute instance value for first prop')
-    ->containsTargetReflectionPropertyReflectionAttributeAndAttributeInstance(
+    ->containsTargetPropertyAndAttributeInstance(
         Fixtures::singleAttributeMultiplePropertiesSingleClass()->fooClass(), 'foo', objectType(PropertyOnly::class),
         fn(PropertyOnly $propertyOnly) => $propertyOnly->value === 'foo-bar-baz'
     );
 
 it('includes attribute instance value for second prop')
-    ->containsTargetReflectionPropertyReflectionAttributeAndAttributeInstance(
+    ->containsTargetPropertyAndAttributeInstance(
         Fixtures::singleAttributeMultiplePropertiesSingleClass()->fooClass(), 'bar', objectType(PropertyOnly::class),
         fn(PropertyOnly $propertyOnly) => $propertyOnly->value === 'foo-bar-baz'
     );
 
 it('includes attribute instance value for third prop')
-    ->containsTargetReflectionPropertyReflectionAttributeAndAttributeInstance(
+    ->containsTargetPropertyAndAttributeInstance(
         Fixtures::singleAttributeMultiplePropertiesSingleClass()->fooClass(), 'baz', objectType(PropertyOnly::class),
         fn(PropertyOnly $propertyOnly) => $propertyOnly->value === 'foo-bar-baz'
     );

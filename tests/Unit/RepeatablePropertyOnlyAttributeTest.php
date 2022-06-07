@@ -20,25 +20,25 @@ it('ensures all targets share attribute reflection')->assertAttributeReflectionS
 
 it('ensures all targets share attribute instance')->assertAttributeInstanceShared();
 
-it('includes target reflection property')->containsTargetReflectionProperty(
+it('includes target reflection property')->containsTargetProperty(
     Fixtures::repeatablePropertyOnlyAttributeSingleClass()->fooClass(), 'something'
 );
 
-it('includes attribute reflection')->containsTargetReflectionPropertyAndReflectionAttribute(
+it('includes attribute reflection')->containsTargetPropertyAndAttribute(
     Fixtures::repeatablePropertyOnlyAttributeSingleClass()->fooClass(), 'something', objectType(RepeatablePropertyOnly::class)
 );
 
-it('includes first attribute instance value')->containsTargetReflectionPropertyReflectionAttributeAndAttributeInstance(
+it('includes first attribute instance value')->containsTargetPropertyAndAttributeInstance(
     Fixtures::repeatablePropertyOnlyAttributeSingleClass()->fooClass(), 'something', objectType(RepeatablePropertyOnly::class),
     fn(RepeatablePropertyOnly $propertyOnly) => $propertyOnly->value === 'Archer'
 );
 
-it('includes second attribute instance value')->containsTargetReflectionPropertyReflectionAttributeAndAttributeInstance(
+it('includes second attribute instance value')->containsTargetPropertyAndAttributeInstance(
     Fixtures::repeatablePropertyOnlyAttributeSingleClass()->fooClass(), 'something', objectType(RepeatablePropertyOnly::class),
     fn(RepeatablePropertyOnly $propertyOnly) => $propertyOnly->value === 'Lana'
 );
 
-it('includes third attribute instance value')->containsTargetReflectionPropertyReflectionAttributeAndAttributeInstance(
+it('includes third attribute instance value')->containsTargetPropertyAndAttributeInstance(
     Fixtures::repeatablePropertyOnlyAttributeSingleClass()->fooClass(), 'something', objectType(RepeatablePropertyOnly::class),
     fn(RepeatablePropertyOnly $propertyOnly) => $propertyOnly->value === 'Ray'
 );

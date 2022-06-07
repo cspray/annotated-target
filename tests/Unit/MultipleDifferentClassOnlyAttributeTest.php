@@ -22,36 +22,36 @@ it('ensures all targets share attribute reflection')->assertAttributeReflectionS
 it('ensures all targets share attribute instance')->assertAttributeInstanceShared();
 
 it('includes target reflection class')
-    ->containsTargetReflectionClass(Fixtures::multipleDifferentClassOnlyAttributeSingleClass()->fooClass());
+    ->containsTargetClass(Fixtures::multipleDifferentClassOnlyAttributeSingleClass()->fooClass());
 
 it('includes attribute reflection class for class only')
-    ->containsTargetReflectionClassAndReflectionAttribute(
+    ->containsTargetClassAndAttribute(
         Fixtures::multipleDifferentClassOnlyAttributeSingleClass()->fooClass(),
         objectType(ClassOnly::class)
     );
 
 it('includes attribute reflection class for repeatable class only')
-    ->containsTargetReflectionClassAndReflectionAttribute(
+    ->containsTargetClassAndAttribute(
         Fixtures::multipleDifferentClassOnlyAttributeSingleClass()->fooClass(),
         objectType(RepeatableClassOnly::class)
     );
 
 it('includes attribute instance for class only')
-    ->containsReflectionClassReflectionAttributeAndAttributeInstance(
+    ->containsTargetClassAndAttributeInstance(
         Fixtures::multipleDifferentClassOnlyAttributeSingleClass()->fooClass(),
         objectType(ClassOnly::class),
         fn(ClassOnly $classOnly) => $classOnly->value === 'foo'
     );
 
 it('includes attribute instance for first repeatable class only')
-    ->containsReflectionClassReflectionAttributeAndAttributeInstance(
+    ->containsTargetClassAndAttributeInstance(
         Fixtures::multipleDifferentClassOnlyAttributeSingleClass()->fooClass(),
         objectType(RepeatableClassOnly::class),
         fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'bar'
 );
 
 it('includes attribute instance for second repeatable class only')
-    ->containsReflectionClassReflectionAttributeAndAttributeInstance(
+    ->containsTargetClassAndAttributeInstance(
         Fixtures::multipleDifferentClassOnlyAttributeSingleClass()->fooClass(),
         objectType(RepeatableClassOnly::class),
         fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'baz'

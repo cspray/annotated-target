@@ -22,17 +22,17 @@ it('ensures all targets share attribute reflection')->assertAttributeReflectionS
 it('ensures all targets share attribute instance')->assertAttributeInstanceShared();
 
 it('contains target reflection class constant')
-    ->containsTargetReflectionClassConstant(
+    ->containsTargetClassConstant(
         Fixtures::constantOnlyAttributeGroupSingleClass()->fooClass(), 'BAR'
     );
 
 it('contains target reflection class constant with attribute')
-    ->containsTargetReflectionClassConstantAndReflectionAttribute(
+    ->containsTargetClassConstantAndAttribute(
         Fixtures::constantOnlyAttributeGroupSingleClass()->fooClass(), 'BAR', objectType(ConstantOnly::class)
     );
 
 it('contains target reflection class constant with attribute instance')
-    ->containsReflectionClassConstantReflectionAttributeAndAttributeInstance(
+    ->containsTargetClassConstantAndAttributeInstance(
         Fixtures::constantOnlyAttributeGroupSingleClass()->fooClass(), 'BAR', objectType(ConstantOnly::class),
         fn(ConstantOnly $constantOnly) => $constantOnly->value === 'getting the constant'
     );

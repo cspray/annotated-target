@@ -21,34 +21,34 @@ it('ensures all targets share attribute reflection')->assertAttributeReflectionS
 it('ensures all targets share attribute instance')->assertAttributeInstanceShared();
 
 it('contains first target reflection class constant')
-    ->containsTargetReflectionClassConstant(
+    ->containsTargetClassConstant(
         Fixtures::singleAttributeMultipleConstantsSingleClass()->fooClass(), 'FOO'
     );
 
 it('contains second target reflection class constant')
-    ->containsTargetReflectionClassConstant(
+    ->containsTargetClassConstant(
         Fixtures::singleAttributeMultipleConstantsSingleClass()->fooClass(), 'BAR'
     );
 
 
 it('contains first target reflection class constant with attribute')
-    ->containsTargetReflectionClassConstantAndReflectionAttribute(
+    ->containsTargetClassConstantAndAttribute(
         Fixtures::singleAttributeMultipleConstantsSingleClass()->fooClass(), 'FOO', objectType(ConstantOnly::class)
     );
 
 it('contains second target reflection class constant with attribute')
-    ->containsTargetReflectionClassConstantAndReflectionAttribute(
+    ->containsTargetClassConstantAndAttribute(
         Fixtures::singleAttributeMultipleConstantsSingleClass()->fooClass(), 'BAR', objectType(ConstantOnly::class)
     );
 
 it('contains first target reflection class constant with attribute instance')
-    ->containsReflectionClassConstantReflectionAttributeAndAttributeInstance(
+    ->containsTargetClassConstantAndAttributeInstance(
         Fixtures::singleAttributeMultipleConstantsSingleClass()->fooClass(), 'FOO', objectType(ConstantOnly::class),
         fn(ConstantOnly $constantOnly) => $constantOnly->value === 'Mallory'
     );
 
 it('contains second target reflection class constant with attribute instance')
-    ->containsReflectionClassConstantReflectionAttributeAndAttributeInstance(
+    ->containsTargetClassConstantAndAttributeInstance(
         Fixtures::singleAttributeMultipleConstantsSingleClass()->fooClass(), 'BAR', objectType(ConstantOnly::class),
         fn(ConstantOnly $constantOnly) => $constantOnly->value === 'Mallory'
     );

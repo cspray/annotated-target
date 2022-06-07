@@ -22,23 +22,23 @@ it('ensures all targets share attribute reflection')->assertAttributeReflectionS
 it('ensures all targets share attribute instance')->assertAttributeInstanceShared();
 
 it('contains target reflection parameter')
-    ->containsTargetReflectionMethodParameter(
+    ->containsTargetMethodParameter(
         Fixtures::repeatableParameterOnlyAttributeSingleClass()->fooClass(), '__construct', 'baz'
     );
 
 it('contains target reflection and attribute')
-    ->containsTargetReflectionParameterAndReflectionAttribute(
+    ->containsTargetMethodParameterAndAttribute(
         Fixtures::repeatableParameterOnlyAttributeSingleClass()->fooClass(), '__construct', 'baz', objectType(RepeatableParameterOnly::class)
     );
 
 it('contains first target reflection and attribute instance')
-    ->containsReflectionParameterReflectionAttributeAndAttributeInstance(
+    ->containsTargetMethodParameterAndAttributeInstance(
         Fixtures::repeatableParameterOnlyAttributeSingleClass()->fooClass(), '__construct', 'baz', objectType(RepeatableParameterOnly::class),
         fn(RepeatableParameterOnly $parameterOnly) => $parameterOnly->value === 'foo'
     );
 
 it('contains second target reflection and attribute instance')
-    ->containsReflectionParameterReflectionAttributeAndAttributeInstance(
+    ->containsTargetMethodParameterAndAttributeInstance(
         Fixtures::repeatableParameterOnlyAttributeSingleClass()->fooClass(), '__construct', 'baz', objectType(RepeatableParameterOnly::class),
         fn(RepeatableParameterOnly $parameterOnly) => $parameterOnly->value === 'bar'
     );

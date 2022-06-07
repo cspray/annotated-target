@@ -21,30 +21,30 @@ it('ensures all targets share attribute reflection')->assertAttributeReflectionS
 it('ensures all targets share attribute instance')->assertAttributeInstanceShared();
 
 it('includes target reflection class')
-    ->containsTargetReflectionClass(Fixtures::repeatableClassOnlyAttributeSingleClass()->fooClass());
+    ->containsTargetClass(Fixtures::repeatableClassOnlyAttributeSingleClass()->fooClass());
 
 it('includes attribute reflection class')
-    ->containsTargetReflectionClassAndReflectionAttribute(
+    ->containsTargetClassAndAttribute(
         Fixtures::repeatableClassOnlyAttributeSingleClass()->fooClass(),
         objectType(RepeatableClassOnly::class)
     );
 
 it('includes first attribute value')
-    ->containsReflectionClassReflectionAttributeAndAttributeInstance(
+    ->containsTargetClassAndAttributeInstance(
         Fixtures::repeatableClassOnlyAttributeSingleClass()->fooClass(),
         objectType(RepeatableClassOnly::class),
         fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'foo'
     );
 
 it('includes second attribute value')
-    ->containsReflectionClassReflectionAttributeAndAttributeInstance(
+    ->containsTargetClassAndAttributeInstance(
         Fixtures::repeatableClassOnlyAttributeSingleClass()->fooClass(),
         objectType(RepeatableClassOnly::class),
         fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'bar'
     );
 
 it('includes third attribute value')
-    ->containsReflectionClassReflectionAttributeAndAttributeInstance(
+    ->containsTargetClassAndAttributeInstance(
         Fixtures::repeatableClassOnlyAttributeSingleClass()->fooClass(),
         objectType(RepeatableClassOnly::class),
         fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'baz'

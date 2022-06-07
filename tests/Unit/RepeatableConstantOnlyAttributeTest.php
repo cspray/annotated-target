@@ -22,23 +22,23 @@ it('ensures all targets share attribute reflection')->assertAttributeReflectionS
 it('ensures all targets share attribute instance')->assertAttributeInstanceShared();
 
 it('contains target reflection class constant')
-    ->containsTargetReflectionClassConstant(
+    ->containsTargetClassConstant(
         Fixtures::repeatableConstantOnlyAttributeSingleClass()->fooClass(), 'FOO_BAR'
     );
 
 it('contains target reflection class constant with attribute')
-    ->containsTargetReflectionClassConstantAndReflectionAttribute(
+    ->containsTargetClassConstantAndAttribute(
         Fixtures::repeatableConstantOnlyAttributeSingleClass()->fooClass(), 'FOO_BAR', objectType(RepeatableConstantOnly::class)
     );
 
 it('contains target reflection class constant with first attribute instance')
-    ->containsReflectionClassConstantReflectionAttributeAndAttributeInstance(
+    ->containsTargetClassConstantAndAttributeInstance(
         Fixtures::repeatableConstantOnlyAttributeSingleClass()->fooClass(), 'FOO_BAR', objectType(RepeatableConstantOnly::class),
         fn(RepeatableConstantOnly $constantOnly) => $constantOnly->value === 'one'
     );
 
 it('contains target reflection class constant with second attribute instance')
-    ->containsReflectionClassConstantReflectionAttributeAndAttributeInstance(
+    ->containsTargetClassConstantAndAttributeInstance(
         Fixtures::repeatableConstantOnlyAttributeSingleClass()->fooClass(), 'FOO_BAR', objectType(RepeatableConstantOnly::class),
         fn(RepeatableConstantOnly $constantOnly) => $constantOnly->value === 'two'
     );

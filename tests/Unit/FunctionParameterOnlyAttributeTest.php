@@ -8,7 +8,7 @@ use function Cspray\Typiphy\objectType;
 
 uses(AnnotatedTargetParserTestCase::class);
 
-beforeEach()->withFixture(Fixtures::parameterOnlyAttributeSingleClass());
+beforeEach()->withFixture(Fixtures::functionParameterOnlyAttributeSingleFunction());
 
 it('counts targets for single parameter')->assertTargetCount(1);
 
@@ -21,17 +21,17 @@ it('ensures all targets share attribute reflection')->assertAttributeReflectionS
 it('ensures all targets share attribute instance')->assertAttributeInstanceShared();
 
 it('contains target reflection parameter')
-    ->containsTargetMethodParameter(
-        Fixtures::parameterOnlyAttributeSingleClass()->fooClass(), 'myMethod', 'myParam'
+    ->containsTargetFunctionParameter(
+        Fixtures::functionParameterOnlyAttributeSingleFunction()->fooFunction(), 'param'
     );
 
 it('contains target reflection and attribute')
-    ->containsTargetMethodParameterAndAttribute(
-        Fixtures::parameterOnlyAttributeSingleClass()->fooClass(), 'myMethod', 'myParam', objectType(ParameterOnly::class)
+    ->containsTargetFunctionParameterAndAttribute(
+        Fixtures::functionParameterOnlyAttributeSingleFunction()->fooFunction(), 'param', objectType(ParameterOnly::class)
     );
 
 it('contains target reflection and attribute instance')
-    ->containsTargetMethodParameterAndAttributeInstance(
-        Fixtures::parameterOnlyAttributeSingleClass()->fooClass(), 'myMethod', 'myParam', objectType(ParameterOnly::class),
-        fn(ParameterOnly $parameterOnly) => $parameterOnly->value === 'myParamValue'
+    ->containsTargetFunctionParameterAndAttributeInstance(
+        Fixtures::functionParameterOnlyAttributeSingleFunction()->fooFunction(), 'param', objectType(ParameterOnly::class),
+        fn(ParameterOnly $parameterOnly) => $parameterOnly->value === 'awesome'
     );

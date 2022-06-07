@@ -23,28 +23,28 @@ it('ensures all targets share attribute reflection')->assertAttributeReflectionS
 it('ensures all targets share attribute instance')->assertAttributeInstanceShared();
 
 it('contains target reflection method')
-    ->containsTargetReflectionMethod(
+    ->containsTargetMethod(
         Fixtures::repeatableMethodOnlyAttributeSingleClass()->fooClass(), 'theirMethod'
     );
 
 it('contains target reflection method and first attribute')
-    ->containsTargetReflectionMethodAndReflectionAttribute(
+    ->containsTargetMethodAndAttribute(
         Fixtures::repeatableMethodOnlyAttributeSingleClass()->fooClass(), 'theirMethod', objectType(MethodOnly::class)
     );
 
 it('contains target reflection method and second attribute')
-    ->containsTargetReflectionMethodAndReflectionAttribute(
+    ->containsTargetMethodAndAttribute(
         Fixtures::repeatableMethodOnlyAttributeSingleClass()->fooClass(), 'theirMethod', objectType(RepeatableMethodOnly::class)
     );
 
 it('contains target reflection method and first attribute instance')
-    ->containsReflectionMethodReflectionAttributeAndAttributeInstance(
+    ->containsTargetMethodAndAttributeInstance(
         Fixtures::repeatableMethodOnlyAttributeSingleClass()->fooClass(), 'theirMethod', objectType(MethodOnly::class),
         fn(MethodOnly $methodOnly) => $methodOnly->value === 'methodOnly'
     );
 
 it('contains target reflection method and second attribute instance')
-    ->containsReflectionMethodReflectionAttributeAndAttributeInstance(
+    ->containsTargetMethodAndAttributeInstance(
         Fixtures::repeatableMethodOnlyAttributeSingleClass()->fooClass(), 'theirMethod', objectType(RepeatableMethodOnly::class),
         fn(RepeatableMethodOnly $methodOnly) => $methodOnly->value === 'repeatableMethodOnly'
     );
