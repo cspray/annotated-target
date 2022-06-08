@@ -78,4 +78,8 @@ final class Fixtures {
         return new NonPhpFileFixture();
     }
 
+    public static function classOnlyAttributeSingleInterface() : ClassOnlyAttributeSingleInterfaceFixture {
+        return new ClassOnlyAttributeSingleInterfaceFixture();
+    }
+
 }
