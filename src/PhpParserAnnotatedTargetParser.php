@@ -83,7 +83,7 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
                             if (!empty($this->filteredAttributes) && !in_array($attrType, $this->filteredAttributes)) {
                                 continue;
                             }
-                            if ($node instanceof Node\Stmt\Class_) {
+                            if ($node instanceof Node\Stmt\Class_ || $node instanceof Node\Stmt\Interface_) {
                                 ($this->consumer)($this->getAnnotatedTargetFromClassNode($node, $index));
                             } else if ($node instanceof Node\Stmt\Property) {
                                 foreach ($node->props as $prop) {
@@ -106,7 +106,7 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
                 }
             }
 
-            private function getAnnotatedTargetFromClassNode(Node\Stmt\Class_ $class, int $index) : AnnotatedTarget {
+            private function getAnnotatedTargetFromClassNode(Node\Stmt\Class_|Node\Stmt\Interface_ $class, int $index) : AnnotatedTarget {
                 $classType = $class->namespacedName->toString();
                 return $this->getAnnotatedTarget(fn() => new ReflectionClass($classType), $index);
             }
