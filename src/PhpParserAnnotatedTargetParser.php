@@ -80,7 +80,7 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
                     foreach ($node->attrGroups as $attrGroup) {
                         foreach ($attrGroup->attrs as $attr) {
                             $attrType = $attr->name->toString();
-                            if (!empty($this->filteredAttributes) && !in_array($attrType, $this->filteredAttributes)) {
+                            if (!empty($this->filteredAttributes) && !$this->isAttributeInstanceOfFilteredAttribute($attrType)) {
                                 continue;
                             }
                             if ($node instanceof Node\Stmt\Class_ || $node instanceof Node\Stmt\Interface_) {
@@ -104,6 +104,16 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
                         }
                     }
                 }
+            }
+
+            private function isAttributeInstanceOfFilteredAttribute(string $attrType) : bool {
+                foreach ($this->filteredAttributes as $filteredAttribute) {
+                    if (is_a($attrType, $filteredAttribute, true)) {
+                        return true;
+                    }
+                }
+
+                return false;
             }
 
             private function getAnnotatedTargetFromClassNode(Node\Stmt\Class_|Node\Stmt\Interface_ $class, int $index) : AnnotatedTarget {

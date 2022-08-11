@@ -82,4 +82,7 @@ final class Fixtures {
         return new ClassOnlyAttributeSingleInterfaceFixture();
     }
 
+    public static function targetAttributeInterface() : TargetAttributeInterfaceFixture {
+        return new TargetAttributeInterfaceFixture();
+    }
 }
