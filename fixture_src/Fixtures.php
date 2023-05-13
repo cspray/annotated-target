@@ -85,4 +85,8 @@ final class Fixtures {
     public static function targetAttributeInterface() : TargetAttributeInterfaceFixture {
         return new TargetAttributeInterfaceFixture();
     }
+
+    public static function invalidSyntax() : BadPhpFileFixture {
+        return new BadPhpFileFixture();
+    }
 }
