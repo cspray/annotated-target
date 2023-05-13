@@ -8,7 +8,7 @@ use Cspray\AnnotatedTargetFixture\PropertyOnly;
 use function Cspray\AnnotatedTarget\parseAttributes;
 use function Cspray\Typiphy\objectType;
 
-$targets = fn() => parseAttributes([Fixtures::classOnlyAttributeSingleClass()->getPath(), Fixtures::propertyOnlyAttributeSingleClass()->getPath()]);
+$targets = fn() => iterator_to_array(parseAttributes([Fixtures::classOnlyAttributeSingleClass()->getPath(), Fixtures::propertyOnlyAttributeSingleClass()->getPath()]));
 
 it('counts targets for single class')
     ->expect($targets)
