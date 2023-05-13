@@ -2,9 +2,11 @@
 
 namespace Cspray\AnnotatedTarget;
 
+use Cspray\AnnotatedTarget\Exception\InvalidPhpSyntax;
 use FilesystemIterator;
 use Generator;
 use Iterator;
+use PhpParser\Error;
 use PhpParser\Node;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor;
@@ -42,9 +44,17 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
         ));
 
         foreach ($this->getSourceIterator($options) as $sourceFile) {
-            $nodes = $this->parser->parse(file_get_contents($sourceFile->getPathname()));
-            $nodeTraverser->traverse($nodes);
-            unset($nodes);
+            try {
+                $nodes = $this->parser->parse(file_get_contents($sourceFile->getPathname()));
+                $nodeTraverser->traverse($nodes);
+            } catch (Error $error) {
+                throw new InvalidPhpSyntax(
+                    message: sprintf('Encountered error parsing %s. Message: %s', $sourceFile, $error->getMessage()),
+                    previous: $error
+                );
+            } finally {
+                unset($nodes);
+            }
         }
 
         yield from $data->targets;
