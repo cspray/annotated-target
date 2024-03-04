@@ -29,7 +29,7 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
     private readonly Parser $parser;
 
     public function __construct() {
-        $this->parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
+        $this->parser = (new ParserFactory())->createForNewestSupportedVersion();
     }
 
     public function parse(AnnotatedTargetParserOptions $options) : Generator {
