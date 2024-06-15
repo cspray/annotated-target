@@ -39,7 +39,7 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
         $data = new \stdClass();
         $data->targets = [];
         $nodeTraverser->addVisitor($this->getVisitor(
-            fn($target) => $data->targets[] = $target,
+            static fn($target) => $data->targets[] = $target,
             $options->getAttributeTypes()
         ));
 
