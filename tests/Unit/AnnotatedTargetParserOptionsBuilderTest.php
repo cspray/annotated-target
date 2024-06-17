@@ -24,7 +24,7 @@ it('throws exception if attributes is empty', function() {
 it('has scan directories in options')
     ->expect(function() {
         $options = AnnotatedTargetParserOptionsBuilder::scanDirectories(Fixtures::classOnlyAttributeSingleClass()->getPath())->build();
-        return $options->getSourceDirectories();
+        return $options->sourceDirectories();
     })
     ->toBe([Fixtures::classOnlyAttributeSingleClass()->getPath()]);
 
@@ -37,7 +37,7 @@ it('has different instance for filterAttributes', function() {
 it('has empty filterAttributes in options')
     ->expect(function() {
         $options = AnnotatedTargetParserOptionsBuilder::scanDirectories(Fixtures::classOnlyAttributeSingleClass()->getPath())->build();
-        return $options->getAttributeTypes();
+        return $options->attributeTypes();
     })->toBeEmpty();
 
 it('has populated filterAttributes in options')
@@ -45,7 +45,7 @@ it('has populated filterAttributes in options')
         $options = AnnotatedTargetParserOptionsBuilder::scanDirectories(Fixtures::classOnlyAttributeSingleClass()->getPath())
             ->filterAttributes(objectType(ClassOnly::class))
             ->build();
-        return $options->getAttributeTypes();
+        return $options->attributeTypes();
     })->toBe([objectType(ClassOnly::class)]);
 
 it('has populated filterAttributes in options, when chained')
@@ -54,5 +54,5 @@ it('has populated filterAttributes in options, when chained')
             ->filterAttributes(objectType(ClassOnly::class))
             ->filterAttributes(objectType(MethodOnly::class))
             ->build();
-        return $options->getAttributeTypes();
+        return $options->attributeTypes();
     })->toBe([objectType(ClassOnly::class), objectType(MethodOnly::class)]);

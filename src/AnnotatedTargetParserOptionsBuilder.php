@@ -40,11 +40,11 @@ final class AnnotatedTargetParserOptionsBuilder {
 
             public function __construct(private readonly array $directories, private readonly array $attributes) {}
 
-            public function getSourceDirectories() : array {
+            public function sourceDirectories() : array {
                 return $this->directories;
             }
 
-            public function getAttributeTypes() : array {
+            public function attributeTypes() : array {
                 return $this->attributes;
             }
         };

@@ -40,7 +40,7 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
         $data->targets = [];
         $nodeTraverser->addVisitor($this->getVisitor(
             static fn($target) => $data->targets[] = $target,
-            $options->getAttributeTypes()
+            $options->attributeTypes()
         ));
 
         foreach ($this->getSourceIterator($options) as $sourceFile) {
@@ -61,7 +61,7 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
     }
 
     private function getSourceIterator(AnnotatedTargetParserOptions $options) : Iterator {
-        foreach ($options->getSourceDirectories() as $directory) {
+        foreach ($options->sourceDirectories() as $directory) {
             $iterator = new RecursiveIteratorIterator(
                 new RecursiveDirectoryIterator($directory, FilesystemIterator::SKIP_DOTS)
             );
@@ -75,7 +75,7 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
     }
 
     private function getVisitor(callable $consumer, array $filteredAttributes) : NodeVisitor {
-        $filteredAttributes = array_map(fn($attr) => $attr->getName(), $filteredAttributes);
+        $filteredAttributes = array_map(fn($attr) => $attr->name(), $filteredAttributes);
         return new class($consumer, $filteredAttributes) extends NodeVisitorAbstract {
 
             private $consumer;
@@ -182,23 +182,23 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
                         $this->reflectorSupplier = $reflectorSupplier;
                     }
 
-                    public function getTargetReflection() : ReflectionClass|ReflectionProperty|ReflectionClassConstant|ReflectionMethod|ReflectionParameter|ReflectionFunction {
+                    public function targetReflection() : ReflectionClass|ReflectionProperty|ReflectionClassConstant|ReflectionMethod|ReflectionParameter|ReflectionFunction {
                         if (!isset($this->reflection)) {
                             $this->reflection = ($this->reflectorSupplier)();
                         }
                         return $this->reflection;
                     }
 
-                    public function getAttributeReflection() : ReflectionAttribute {
+                    public function attributeReflection() : ReflectionAttribute {
                         if (!isset($this->reflectionAttribute)) {
-                            $this->reflectionAttribute = $this->getTargetReflection()->getAttributes()[$this->index];
+                            $this->reflectionAttribute = $this->targetReflection()->getAttributes()[$this->index];
                         }
                         return $this->reflectionAttribute;
                     }
 
-                    public function getAttributeInstance() : object {
+                    public function attributeInstance() : object {
                         if (!isset($this->attribute)) {
-                            $this->attribute = $this->getAttributeReflection()->newInstance();
+                            $this->attribute = $this->attributeReflection()->newInstance();
                         }
                         return $this->attribute;
                     }
