@@ -12,10 +12,10 @@ use ReflectionProperty;
 
 interface AnnotatedTarget {
 
-    public function getTargetReflection() : ReflectionClass|ReflectionProperty|ReflectionClassConstant|ReflectionMethod|ReflectionParameter|ReflectionFunction;
+    public function targetReflection() : ReflectionClass|ReflectionProperty|ReflectionClassConstant|ReflectionMethod|ReflectionParameter|ReflectionFunction;
 
-    public function getAttributeReflection() : ReflectionAttribute;
+    public function attributeReflection() : ReflectionAttribute;
 
-    public function getAttributeInstance() : object;
+    public function attributeInstance() : object;
 
 }

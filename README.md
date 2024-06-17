@@ -50,14 +50,14 @@ use function Cspray\AnnotatedTarget\parseAttributes;
 foreach (parseAttributes(__DIR__ . '/src') as $annotatedTarget) {
     // $annotatedTarget is an instanceof AnnotatedTarget
     // This will be a ReflectionClass, ReflectionProperty, or ReflectionMethod depending on which iteration
-    $target = $annotatedTarget->getTargetReflection();
+    $target = $annotatedTarget->targetReflection();
     // This will be a ReflectionAttribute
-    $attributeReflection = $annotatedTarget->getAttributeReflection();
-    // This will be an instance of the Attribute returned from $this->getAttributeReflection()->newInstance()
-    $attributeInstance = $annotatedTarget->getAttributeInstance();
+    $attributeReflection = $annotatedTarget->attributeReflection();
+    // This will be an instance of the Attribute returned from $this->attributeReflection()->newInstance()
+    $attributeInstance = $annotatedTarget->attributeInstance();
     
     // All the methods above are shared
-    $isShared = $annotatedTarget->getTargetReflection() === $annotatedTarget->getTargetReflection(); // true
+    $isShared = $annotatedTarget->targetReflection() === $annotatedTarget->targetReflection(); // true
 }
 ```
 

@@ -6,8 +6,8 @@ use Generator;
 use function Cspray\Typiphy\objectType;
 
 /**
- * @param array|string $directories
- * @param array $filterAttributes
+ * @param list<non-empty-string>|non-empty-string $directories
+ * @param list<class-string> $filterAttributes
  * @return Generator<AnnotatedTarget>
  * @throws Exception\InvalidArgumentException
  */
@@ -20,5 +20,6 @@ function parseAttributes(array|string $directories, array $filterAttributes = []
         $attributeTypes = array_map(fn($type) => objectType($type), $filterAttributes);
         $builder = $builder->filterAttributes(...$attributeTypes);
     }
+
     return $parser->parse($builder->build());
 }
