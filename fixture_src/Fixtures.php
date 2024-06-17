@@ -89,4 +89,8 @@ final class Fixtures {
     public static function invalidSyntax() : BadPhpFileFixture {
         return new BadPhpFileFixture();
     }
+
+    public static function aliasedAttribute() : AliasedAttributeFixture {
+        return new AliasedAttributeFixture();
+    }
 }

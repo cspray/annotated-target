@@ -2,25 +2,30 @@ name: 'Unit Tests'
 
 on:
   push:
-    branches: [ main ]
+    branches: [ release-1.x ]
   pull_request:
-    branches: [ main ]
+    branches: [ release-1.x ]
 
 jobs:
   build-test:
-
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        composer: [lowest, highest]
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Setup PHP 8
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.1
-          tools: composer:v2
+          tools: none
           coverage: none
       - name: Composer Install
-        run: composer update --no-interaction --no-progress --ansi
+        uses: ramsey/composer-install@v2
+        with:
+          dependency-versions: ${{ matrix.composer }}
       - name: Unit Tests
         run: ./vendor/bin/pest --colors=always

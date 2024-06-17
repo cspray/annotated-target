@@ -4,7 +4,6 @@ namespace Cspray\AnnotatedTarget\Unit;
 
 use Cspray\AnnotatedTargetFixture\ClassOnly;
 use Cspray\AnnotatedTargetFixture\Fixtures;
-use Cspray\AnnotatedTargetFixture\ParameterOnly;
 use Cspray\AnnotatedTargetFixture\RepeatableClassOnly;
 use function Cspray\Typiphy\objectType;
 

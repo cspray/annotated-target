@@ -29,7 +29,7 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
     private readonly Parser $parser;
 
     public function __construct() {
-        $this->parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
+        $this->parser = (new ParserFactory())->createForNewestSupportedVersion();
     }
 
     public function parse(AnnotatedTargetParserOptions $options) : Generator {
@@ -39,7 +39,7 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
         $data = new \stdClass();
         $data->targets = [];
         $nodeTraverser->addVisitor($this->getVisitor(
-            fn($target) => $data->targets[] = $target,
+            static fn($target) => $data->targets[] = $target,
             $options->getAttributeTypes()
         ));
 
