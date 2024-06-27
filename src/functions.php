@@ -2,23 +2,24 @@
 
 namespace Cspray\AnnotatedTarget;
 
+use Cspray\AnnotatedTarget\Exception\InvalidArgumentException;
+use Cspray\AnnotatedTarget\Exception\InvalidPhpSyntax;
 use Generator;
-use function Cspray\Typiphy\objectType;
 
 /**
- * @param list<non-empty-string>|non-empty-string $directories
+ * @param non-empty-list<non-empty-string>|non-empty-string $directories
  * @param list<class-string> $filterAttributes
  * @return Generator<AnnotatedTarget>
- * @throws Exception\InvalidArgumentException
+ * @throws InvalidArgumentException
+ * @throws InvalidPhpSyntax
  */
 function parseAttributes(array|string $directories, array $filterAttributes = []) : Generator {
     $parser = new PhpParserAnnotatedTargetParser();
     $directories = is_string($directories) ? [$directories] : $directories;
 
-    $builder = AnnotatedTargetParserOptionsBuilder::scanDirectories(...$directories);
-    if (!empty($filterAttributes)) {
-        $attributeTypes = array_map(fn($type) => objectType($type), $filterAttributes);
-        $builder = $builder->filterAttributes(...$attributeTypes);
+    $builder = AnnotatedTargetParserOptionsBuilder::scanDirectories($directories);
+    if ($filterAttributes !== []) {
+        $builder = $builder->filterAttributes($filterAttributes);
     }
 
     return $parser->parse($builder->build());

@@ -4,7 +4,6 @@ namespace Cspray\AnnotatedTarget\Unit;
 
 use Cspray\AnnotatedTargetFixture\ClassOnly;
 use Cspray\AnnotatedTargetFixture\Fixtures;
-use function Cspray\Typiphy\objectType;
 
 uses(AnnotatedTargetParserTestCase::class);
 
@@ -36,12 +35,12 @@ it('includes target reflection class')
 
 it('includes attribute reflection class')
     ->expect(fn() => $this->getTargets())
-    ->toContainTargetClassWithAttribute(Fixtures::aliasedAttribute()->fooClass(), objectType(ClassOnly::class));
+    ->toContainTargetClassWithAttribute(Fixtures::aliasedAttribute()->fooClass(), ClassOnly::class);
 
 it('includes attribute instance with correct value')
     ->expect(fn() => $this->getTargets())
     ->toContainTargetClassWithAttributeInstance(
         Fixtures::aliasedAttribute()->fooClass(),
-        objectType(ClassOnly::class),
+        ClassOnly::class,
         fn(ClassOnly $classOnly) => $classOnly->value === 'my aliased value'
     );

@@ -4,7 +4,6 @@ namespace Cspray\AnnotatedTarget\Unit;
 
 use Cspray\AnnotatedTargetFixture\Fixtures;
 use Cspray\AnnotatedTargetFixture\PropertyOnly;
-use function Cspray\Typiphy\objectType;
 
 uses(AnnotatedTargetParserTestCase::class);
 
@@ -41,12 +40,12 @@ it('includes target reflection property')
 it('includes attribute reflection property')
     ->expect($targets)
     ->toContainTargetPropertyWithAttribute(
-        Fixtures::propertyOnlyAttributeSingleClass()->fooClass(), 'prop', objectType(PropertyOnly::class)
+        Fixtures::propertyOnlyAttributeSingleClass()->fooClass(), 'prop', PropertyOnly::class
     );
 
 it('includes attribute instance value')
     ->expect($targets)
     ->toContainTargetPropertyWithAttributeInstance(
-        Fixtures::propertyOnlyAttributeSingleClass()->fooClass(), 'prop', objectType(PropertyOnly::class),
-        fn(PropertyOnly $propertyOnly) => $propertyOnly->value === 'nick'
+        Fixtures::propertyOnlyAttributeSingleClass()->fooClass(), 'prop', PropertyOnly::class,
+        static fn(PropertyOnly $propertyOnly) => $propertyOnly->value === 'nick'
     );

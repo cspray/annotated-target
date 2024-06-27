@@ -3,9 +3,7 @@
 namespace Cspray\AnnotatedTarget\Unit;
 
 use Cspray\AnnotatedTargetFixture\Fixtures;
-use Cspray\AnnotatedTargetFixture\FunctionOnly;
 use Cspray\AnnotatedTargetFixture\RepeatableFunctionOnly;
-use function Cspray\Typiphy\objectType;
 
 uses(AnnotatedTargetParserTestCase::class);
 
@@ -40,19 +38,19 @@ it('contains target reflection function')
 it('contains target reflection function and reflection attribute')
     ->expect($targets)
     ->toContainTargetFunctionWithAttribute(
-        Fixtures::repeatableFunctionOnlyAttributeSingleFunction()->fooFunction(), objectType(RepeatableFunctionOnly::class)
+        Fixtures::repeatableFunctionOnlyAttributeSingleFunction()->fooFunction(), RepeatableFunctionOnly::class
     );
 
 it('contains target reflection function and first attribute instance')
     ->expect($targets)
     ->toContainTargetFunctionWithAttributeInstance(
-        Fixtures::repeatableFunctionOnlyAttributeSingleFunction()->fooFunction(), objectType(RepeatableFunctionOnly::class),
-        fn(RepeatableFunctionOnly $functionOnly) => $functionOnly->value === 'nick'
+        Fixtures::repeatableFunctionOnlyAttributeSingleFunction()->fooFunction(), RepeatableFunctionOnly::class,
+        static fn(RepeatableFunctionOnly $functionOnly) => $functionOnly->value === 'nick'
     );
 
 it('contains target reflection function and second attribute instance')
     ->expect($targets)
     ->toContainTargetFunctionWithAttributeInstance(
-        Fixtures::repeatableFunctionOnlyAttributeSingleFunction()->fooFunction(), objectType(RepeatableFunctionOnly::class),
-        fn(RepeatableFunctionOnly $functionOnly) => $functionOnly->value === 'xoe'
+        Fixtures::repeatableFunctionOnlyAttributeSingleFunction()->fooFunction(), RepeatableFunctionOnly::class,
+        static fn(RepeatableFunctionOnly $functionOnly) => $functionOnly->value === 'xoe'
     );

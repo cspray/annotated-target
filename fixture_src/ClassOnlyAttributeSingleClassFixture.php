@@ -11,7 +11,7 @@ final class ClassOnlyAttributeSingleClassFixture implements Fixture {
         return __DIR__ . '/ClassOnlyAttributeSingleClass';
     }
 
-    public function fooClass() : ObjectType {
-        return objectType(ClassOnlyAttributeSingleClass\FooClass::class);
+    public function fooClass() : string {
+        return ClassOnlyAttributeSingleClass\FooClass::class;
     }
 }

@@ -4,7 +4,6 @@ namespace Cspray\AnnotatedTarget\Unit;
 
 use Cspray\AnnotatedTargetFixture\Fixtures;
 use Cspray\AnnotatedTargetFixture\RepeatableParameterOnly;
-use function Cspray\Typiphy\objectType;
 
 uses(AnnotatedTargetParserTestCase::class);
 
@@ -41,19 +40,19 @@ it('contains target reflection parameter')
 it('contains target reflection and attribute')
     ->expect($targets)
     ->toContainTargetMethodParameterWithAttribute(
-        Fixtures::repeatableParameterOnlyAttributeSingleClass()->fooClass(), '__construct', 'baz', objectType(RepeatableParameterOnly::class)
+        Fixtures::repeatableParameterOnlyAttributeSingleClass()->fooClass(), '__construct', 'baz', RepeatableParameterOnly::class
     );
 
 it('contains first target reflection and attribute instance')
     ->expect($targets)
     ->toContainTargetMethodParameterWithAttributeInstance(
-        Fixtures::repeatableParameterOnlyAttributeSingleClass()->fooClass(), '__construct', 'baz', objectType(RepeatableParameterOnly::class),
-        fn(RepeatableParameterOnly $parameterOnly) => $parameterOnly->value === 'foo'
+        Fixtures::repeatableParameterOnlyAttributeSingleClass()->fooClass(), '__construct', 'baz', RepeatableParameterOnly::class,
+        static fn(RepeatableParameterOnly $parameterOnly) => $parameterOnly->value === 'foo'
     );
 
 it('contains second target reflection and attribute instance')
     ->expect($targets)
     ->toContainTargetMethodParameterWithAttributeInstance(
-        Fixtures::repeatableParameterOnlyAttributeSingleClass()->fooClass(), '__construct', 'baz', objectType(RepeatableParameterOnly::class),
-        fn(RepeatableParameterOnly $parameterOnly) => $parameterOnly->value === 'bar'
+        Fixtures::repeatableParameterOnlyAttributeSingleClass()->fooClass(), '__construct', 'baz', RepeatableParameterOnly::class,
+        static fn(RepeatableParameterOnly $parameterOnly) => $parameterOnly->value === 'bar'
     );

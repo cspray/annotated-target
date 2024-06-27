@@ -5,7 +5,6 @@ namespace Cspray\AnnotatedTarget;
 use Cspray\AnnotatedTarget\Unit\AnnotatedTargetParserTestCase;
 use Cspray\AnnotatedTargetFixture\ConstantOnly;
 use Cspray\AnnotatedTargetFixture\Fixtures;
-use function Cspray\Typiphy\objectType;
 
 uses(AnnotatedTargetParserTestCase::class);
 
@@ -40,12 +39,12 @@ it('contains target reflection class constant')
 it('contains target reflection class constant with attribute')
     ->expect(fn() => $this->getTargets())
     ->toContainTargetClassConstantWithAttribute(
-        Fixtures::constantOnlyAttributeGroupSingleClass()->fooClass(), 'BAR', objectType(ConstantOnly::class)
+        Fixtures::constantOnlyAttributeGroupSingleClass()->fooClass(), 'BAR', ConstantOnly::class
     );
 
 it('contains target reflection class constant with attribute instance')
     ->expect(fn() => $this->getTargets())
     ->toContainTargetClassConstantWithAttributeInstance(
-        Fixtures::constantOnlyAttributeGroupSingleClass()->fooClass(), 'BAR', objectType(ConstantOnly::class),
+        Fixtures::constantOnlyAttributeGroupSingleClass()->fooClass(), 'BAR', ConstantOnly::class,
         fn(ConstantOnly $constantOnly) => $constantOnly->value === 'getting the constant'
     );

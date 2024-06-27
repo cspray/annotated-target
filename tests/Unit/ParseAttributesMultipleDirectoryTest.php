@@ -6,7 +6,6 @@ use Cspray\AnnotatedTargetFixture\ClassOnly;
 use Cspray\AnnotatedTargetFixture\Fixtures;
 use Cspray\AnnotatedTargetFixture\PropertyOnly;
 use function Cspray\AnnotatedTarget\parseAttributes;
-use function Cspray\Typiphy\objectType;
 
 $targets = fn() => iterator_to_array(parseAttributes([Fixtures::classOnlyAttributeSingleClass()->getPath(), Fixtures::propertyOnlyAttributeSingleClass()->getPath()]));
 
@@ -36,13 +35,13 @@ it('contains class attribute target')
 
 it('contains class attribute target and attribute')
     ->expect($targets)
-    ->toContainTargetClassWithAttribute(Fixtures::classOnlyAttributeSingleClass()->fooClass(), objectType(ClassOnly::class));
+    ->toContainTargetClassWithAttribute(Fixtures::classOnlyAttributeSingleClass()->fooClass(), ClassOnly::class);
 
 it('contains class attribute target and attribute instance')
     ->expect($targets)
     ->toContainTargetClassWithAttributeInstance(
-        Fixtures::classOnlyAttributeSingleClass()->fooClass(), objectType(ClassOnly::class),
-        fn($classOnly) => $classOnly instanceof ClassOnly && $classOnly->value === 'single-class-foobar'
+        Fixtures::classOnlyAttributeSingleClass()->fooClass(), ClassOnly::class,
+        static fn($classOnly) => $classOnly instanceof ClassOnly && $classOnly->value === 'single-class-foobar'
     );
 
 it('contains property attribute target')
@@ -54,12 +53,12 @@ it('contains property attribute target')
 it('contains property attribute target and attribute')
     ->expect($targets)
     ->toContainTargetPropertyWithAttribute(
-        Fixtures::propertyOnlyAttributeSingleClass()->fooClass(), 'prop', objectType(PropertyOnly::class)
+        Fixtures::propertyOnlyAttributeSingleClass()->fooClass(), 'prop', PropertyOnly::class
     );
 
 it('contains property attribute target and attribute instance')
     ->expect($targets)
     ->toContainTargetPropertyWithAttributeInstance(
-        Fixtures::propertyOnlyAttributeSingleClass()->fooClass(), 'prop', objectType(PropertyOnly::class),
-        fn($propertyOnly) => $propertyOnly instanceof PropertyOnly && $propertyOnly->value === 'nick'
+        Fixtures::propertyOnlyAttributeSingleClass()->fooClass(), 'prop', PropertyOnly::class,
+        static fn($propertyOnly) => $propertyOnly instanceof PropertyOnly && $propertyOnly->value === 'nick'
     );

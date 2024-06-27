@@ -75,9 +75,7 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
     }
 
     private function getVisitor(callable $consumer, array $filteredAttributes) : NodeVisitor {
-        $filteredAttributes = array_map(fn($attr) => $attr->name(), $filteredAttributes);
         return new class($consumer, $filteredAttributes) extends NodeVisitorAbstract {
-
             private $consumer;
 
             public function __construct(callable $consumer, private readonly array $filteredAttributes) {

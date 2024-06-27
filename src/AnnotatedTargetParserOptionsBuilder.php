@@ -12,12 +12,15 @@ final class AnnotatedTargetParserOptionsBuilder {
 
     private function __construct() {}
 
-    public static function scanDirectories(string... $dirs) : self {
+    /**
+     * @param non-empty-list<non-empty-string> $dirs
+     * @return self
+     * @throws InvalidArgumentException
+     */
+    public static function scanDirectories(array $dirs) : self {
         $instance = new self;
         foreach ($dirs as $dir) {
-            if (empty($dir)) {
-                throw new InvalidArgumentException('The directories to scan must not include an empty value.');
-            } else if (!is_dir($dir)) {
+            if (!is_dir($dir)) {
                 throw new InvalidArgumentException(sprintf("The value '%s' is not a directory.", $dir));
             }
 
@@ -26,10 +29,10 @@ final class AnnotatedTargetParserOptionsBuilder {
         return $instance;
     }
 
-    public function filterAttributes(ObjectType... $attributes) : self {
-        if (empty($attributes)) {
-            throw new InvalidArgumentException('The Attributes to filter by must not be empty.');
-        }
+    /**
+     * @param non-empty-list<class-string> $attributes
+     */
+    public function filterAttributes(array $attributes) : self {
         $instance = clone $this;
         $instance->attributes = [...$this->attributes, ...$attributes];
         return $instance;

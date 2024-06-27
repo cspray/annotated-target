@@ -5,7 +5,6 @@ namespace Cspray\AnnotatedTarget\Unit;
 use Cspray\AnnotatedTargetFixture\ClassOnly;
 use Cspray\AnnotatedTargetFixture\Fixtures;
 use Cspray\AnnotatedTargetFixture\RepeatableClassOnly;
-use function Cspray\Typiphy\objectType;
 
 uses(AnnotatedTargetParserTestCase::class);
 
@@ -41,36 +40,36 @@ it('includes attribute reflection class for class only')
     ->expect($targets)
     ->toContainTargetClassWithAttribute(
         Fixtures::multipleDifferentClassOnlyAttributeSingleClass()->fooClass(),
-        objectType(ClassOnly::class)
+        ClassOnly::class
     );
 
 it('includes attribute reflection class for repeatable class only')
     ->expect($targets)
     ->toContainTargetClassWithAttribute(
         Fixtures::multipleDifferentClassOnlyAttributeSingleClass()->fooClass(),
-        objectType(RepeatableClassOnly::class)
+        RepeatableClassOnly::class
     );
 
 it('includes attribute instance for class only')
     ->expect($targets)
     ->toContainTargetClassWithAttributeInstance(
         Fixtures::multipleDifferentClassOnlyAttributeSingleClass()->fooClass(),
-        objectType(ClassOnly::class),
-        fn(ClassOnly $classOnly) => $classOnly->value === 'foo'
+        ClassOnly::class,
+        static fn(ClassOnly $classOnly) => $classOnly->value === 'foo'
     );
 
 it('includes attribute instance for first repeatable class only')
     ->expect($targets)
     ->toContainTargetClassWithAttributeInstance(
         Fixtures::multipleDifferentClassOnlyAttributeSingleClass()->fooClass(),
-        objectType(RepeatableClassOnly::class),
-        fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'bar'
+        RepeatableClassOnly::class,
+        static fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'bar'
 );
 
 it('includes attribute instance for second repeatable class only')
     ->expect($targets)
     ->toContainTargetClassWithAttributeInstance(
         Fixtures::multipleDifferentClassOnlyAttributeSingleClass()->fooClass(),
-        objectType(RepeatableClassOnly::class),
-        fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'baz'
+        RepeatableClassOnly::class,
+        static fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'baz'
     );

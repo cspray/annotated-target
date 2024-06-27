@@ -2,17 +2,15 @@
 
 namespace Cspray\AnnotatedTarget;
 
-use Cspray\Typiphy\ObjectType;
-
 interface AnnotatedTargetParserOptions {
 
     /**
-     * @return list<non-empty-string>
+     * @return non-empty-list<non-empty-string>
      */
     public function sourceDirectories() : array;
 
     /**
-     * @return list<ObjectType>
+     * @return non-empty-list<class-string>
      */
     public function attributeTypes() : array;
 
