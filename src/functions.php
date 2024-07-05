@@ -17,10 +17,11 @@ function parseAttributes(array|string $directories, array $filterAttributes = []
     $parser = new PhpParserAnnotatedTargetParser();
     $directories = is_string($directories) ? [$directories] : $directories;
 
-    $builder = AnnotatedTargetParserOptionsBuilder::scanDirectories($directories);
-    if ($filterAttributes !== []) {
-        $builder = $builder->filterAttributes($filterAttributes);
+    if ($filterAttributes === []) {
+        $options = AnnotatedTargetParserOptions::scanAllAttributes(...$directories);
+    } else {
+        $options = AnnotatedTargetParserOptions::scanForSpecificAttributes($directories, $filterAttributes);
     }
 
-    return $parser->parse($builder->build());
+    return $parser->parse($options);
 }

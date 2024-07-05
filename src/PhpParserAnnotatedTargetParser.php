@@ -2,6 +2,7 @@
 
 namespace Cspray\AnnotatedTarget;
 
+use Closure;
 use Cspray\AnnotatedTarget\Exception\InvalidPhpSyntax;
 use FilesystemIterator;
 use Generator;
@@ -36,11 +37,12 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
         $nodeTraverser = new NodeTraverser();
         $nodeTraverser->addVisitor(new NodeVisitor\NodeConnectingVisitor());
         $nodeTraverser->addVisitor(new NodeVisitor\NameResolver());
+        /** @var \stdClass{targets: list<AnnotatedTarget>} $data */
         $data = new \stdClass();
         $data->targets = [];
         $nodeTraverser->addVisitor($this->getVisitor(
-            static fn($target) => $data->targets[] = $target,
-            $options->attributeTypes()
+            static fn(AnnotatedTarget $target) => $data->targets[] = $target,
+            $options->filteredAttributes
         ));
 
         foreach ($this->getSourceIterator($options) as $sourceFile) {
@@ -61,7 +63,7 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
     }
 
     private function getSourceIterator(AnnotatedTargetParserOptions $options) : Iterator {
-        foreach ($options->sourceDirectories() as $directory) {
+        foreach ($options->sourceDirectories as $directory) {
             $iterator = new RecursiveIteratorIterator(
                 new RecursiveDirectoryIterator($directory, FilesystemIterator::SKIP_DOTS)
             );
@@ -126,25 +128,25 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
 
             private function getAnnotatedTargetFromClassNode(Node\Stmt\Class_|Node\Stmt\Interface_ $class, int $index) : AnnotatedTarget {
                 $classType = $class->namespacedName->toString();
-                return $this->getAnnotatedTarget(fn() => new ReflectionClass($classType), $index);
+                return $this->getAnnotatedTarget(static fn() : ReflectionClass => new ReflectionClass($classType), $index);
             }
 
             private function getAnnotatedTargetFromPropertyNode(Node\Stmt\PropertyProperty $property, int $index) : AnnotatedTarget {
                 $classType = $property->getAttribute('parent')->getAttribute('parent')->namespacedName->toString();
                 $propertyName = $property->name->toString();
-                return $this->getAnnotatedTarget(fn() => new ReflectionProperty($classType, $propertyName), $index);
+                return $this->getAnnotatedTarget(static fn() : ReflectionProperty => new ReflectionProperty($classType, $propertyName), $index);
             }
 
             private function getAnnotatedTargetFromClassConstantNode(Node\Const_ $classConst, int $index) : AnnotatedTarget {
                 $classType = $classConst->getAttribute('parent')->getAttribute('parent')->namespacedName->toString();
                 $constName = $classConst->name->toString();
-                return $this->getAnnotatedTarget(fn() => new ReflectionClassConstant($classType, $constName), $index);
+                return $this->getAnnotatedTarget(static fn() : ReflectionClassConstant => new ReflectionClassConstant($classType, $constName), $index);
             }
 
             private function getAnnotatedTargetFromMethodNode(Node\Stmt\ClassMethod $classMethod, int $index) : AnnotatedTarget {
                 $classType = $classMethod->getAttribute('parent')->namespacedName->toString();
                 $methodName = $classMethod->name->toString();
-                return $this->getAnnotatedTarget(fn() => new ReflectionMethod(sprintf('%s::%s', $classType, $methodName)), $index);
+                return $this->getAnnotatedTarget(static fn() : ReflectionMethod => new ReflectionMethod(sprintf('%s::%s', $classType, $methodName)), $index);
             }
 
             private function getAnnotatedTargetFromMethodParameter(Node\Param $param, int $index) : AnnotatedTarget {
@@ -157,45 +159,57 @@ final class PhpParserAnnotatedTargetParser implements AnnotatedTargetParser {
                     $callable = $paramParent->namespacedName->toString();
                 }
                 $paramName = $param->var->name;
-                return $this->getAnnotatedTarget(fn() => new ReflectionParameter($callable, $paramName), $index);
+                return $this->getAnnotatedTarget(static fn() : ReflectionParameter => new ReflectionParameter($callable, $paramName), $index);
             }
 
             private function getAnnotatedTargetFromFunction(Node\Stmt\Function_ $function, int $index) : AnnotatedTarget {
                 $function = $function->namespacedName->toString();
-                return $this->getAnnotatedTarget(fn() => new ReflectionFunction($function), $index);
+                return $this->getAnnotatedTarget(static fn() => new ReflectionFunction($function), $index);
             }
 
-            private function getAnnotatedTarget(callable $reflectorSupplier, int $index) : AnnotatedTarget {
+            /**
+             * @param Closure():ReflectionClass|ReflectionProperty|ReflectionClassConstant|ReflectionMethod|ReflectionParameter|ReflectionFunction $reflectorSupplier
+             * @param int $index
+             * @return AnnotatedTarget
+             */
+            private function getAnnotatedTarget(Closure $reflectorSupplier, int $index) : AnnotatedTarget {
                 return new class($reflectorSupplier, $index) implements AnnotatedTarget {
 
-                    private $reflectorSupplier;
-                    private ReflectionClass|ReflectionProperty|ReflectionClassConstant|ReflectionMethod|ReflectionParameter|ReflectionFunction $reflection;
-                    private ReflectionAttribute $reflectionAttribute;
-                    private object $attribute;
+                    /**
+                     * @var Closure():ReflectionClass|ReflectionProperty|ReflectionClassConstant|ReflectionFunction|ReflectionMethod|ReflectionParameter
+                     */
+                    private Closure $reflectorSupplier;
+                    private ReflectionClass|ReflectionProperty|ReflectionClassConstant|ReflectionMethod|ReflectionParameter|ReflectionFunction|null $reflection = null;
+                    private ReflectionAttribute|null $reflectionAttribute = null;
+                    private object|null $attribute = null;
 
+                    /**
+                     * @param Closure():ReflectionClass|ReflectionProperty|ReflectionClassConstant|ReflectionMethod|ReflectionParameter|ReflectionFunction $reflectorSupplier
+                     * @param int $index
+                     */
                     public function __construct(
-                        callable $reflectorSupplier,
+                        Closure $reflectorSupplier,
                         private readonly int $index
                     ) {
                         $this->reflectorSupplier = $reflectorSupplier;
                     }
 
                     public function targetReflection() : ReflectionClass|ReflectionProperty|ReflectionClassConstant|ReflectionMethod|ReflectionParameter|ReflectionFunction {
-                        if (!isset($this->reflection)) {
+                        if ($this->reflection === null) {
                             $this->reflection = ($this->reflectorSupplier)();
                         }
                         return $this->reflection;
                     }
 
                     public function attributeReflection() : ReflectionAttribute {
-                        if (!isset($this->reflectionAttribute)) {
+                        if ($this->reflectionAttribute === null) {
                             $this->reflectionAttribute = $this->targetReflection()->getAttributes()[$this->index];
                         }
                         return $this->reflectionAttribute;
                     }
 
                     public function attributeInstance() : object {
-                        if (!isset($this->attribute)) {
+                        if ($this->attribute === null) {
                             $this->attribute = $this->attributeReflection()->newInstance();
                         }
                         return $this->attribute;
