@@ -4,7 +4,6 @@ namespace Cspray\AnnotatedTarget\Unit;
 
 use Cspray\AnnotatedTargetFixture\Fixtures;
 use Cspray\AnnotatedTargetFixture\FunctionOnly;
-use function Cspray\Typiphy\objectType;
 
 uses(AnnotatedTargetParserTestCase::class);
 
@@ -37,12 +36,12 @@ it('contains target reflection function')
 it('contains target reflection function and reflection attribute')
     ->expect(fn() => $this->getTargets())
     ->toContainTargetFunctionWithAttribute(
-        Fixtures::functionOnlyAttributeSingleFunction()->fooFunction(), objectType(FunctionOnly::class)
+        Fixtures::functionOnlyAttributeSingleFunction()->fooFunction(), FunctionOnly::class
     );
 
 it('contains target reflection function and attribute instance')
     ->expect(fn() => $this->getTargets())
     ->toContainTargetFunctionWithAttributeInstance(
-        Fixtures::functionOnlyAttributeSingleFunction()->fooFunction(), objectType(FunctionOnly::class),
-        fn(FunctionOnly $functionOnly) => $functionOnly->value === 'would a crazy person do this?'
+        Fixtures::functionOnlyAttributeSingleFunction()->fooFunction(), FunctionOnly::class,
+        static fn(FunctionOnly $functionOnly) => $functionOnly->value === 'would a crazy person do this?'
     );

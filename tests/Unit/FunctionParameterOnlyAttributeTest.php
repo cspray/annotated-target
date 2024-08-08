@@ -4,7 +4,6 @@ namespace Cspray\AnnotatedTarget\Unit;
 
 use Cspray\AnnotatedTargetFixture\Fixtures;
 use Cspray\AnnotatedTargetFixture\ParameterOnly;
-use function Cspray\Typiphy\objectType;
 
 uses(AnnotatedTargetParserTestCase::class);
 
@@ -41,12 +40,12 @@ it('contains target reflection parameter')
 it('contains target reflection and attribute')
     ->expect($targets)
     ->toContainTargetFunctionParameterWithAttribute(
-        Fixtures::functionParameterOnlyAttributeSingleFunction()->fooFunction(), 'param', objectType(ParameterOnly::class)
+        Fixtures::functionParameterOnlyAttributeSingleFunction()->fooFunction(), 'param', ParameterOnly::class
     );
 
 it('contains target reflection and attribute instance')
     ->expect($targets)
     ->toContainTargetFunctionParameterWithAttributeInstance(
-        Fixtures::functionParameterOnlyAttributeSingleFunction()->fooFunction(), 'param', objectType(ParameterOnly::class),
+        Fixtures::functionParameterOnlyAttributeSingleFunction()->fooFunction(), 'param', ParameterOnly::class,
         fn(ParameterOnly $parameterOnly) => $parameterOnly->value === 'awesome'
     );

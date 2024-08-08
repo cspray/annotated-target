@@ -5,7 +5,6 @@ namespace Cspray\AnnotatedTarget;
 use Cspray\AnnotatedTarget\Unit\AnnotatedTargetParserTestCase;
 use Cspray\AnnotatedTargetFixture\Fixtures;
 use Cspray\AnnotatedTargetFixture\MethodOnly;
-use function Cspray\Typiphy\objectType;
 
 uses(AnnotatedTargetParserTestCase::class);
 
@@ -42,12 +41,12 @@ it('has target reflection method')
 it('has target reflection method and attribute')
     ->expect($targets)
     ->toContainTargetMethodWithAttribute(
-        Fixtures::methodOnlyAttributeSingleClass()->fooClass(), 'myMethod', objectType(MethodOnly::class)
+        Fixtures::methodOnlyAttributeSingleClass()->fooClass(), 'myMethod', MethodOnly::class
     );
 
 it('has target method and attribute instance')
     ->expect($targets)
     ->toContainTargetMethodWithAttributeInstance(
-        Fixtures::methodOnlyAttributeSingleClass()->fooClass(), 'myMethod', objectType(MethodOnly::class),
+        Fixtures::methodOnlyAttributeSingleClass()->fooClass(), 'myMethod', MethodOnly::class,
         fn(MethodOnly $methodOnly) => $methodOnly->value === 'is the coolest method'
     );

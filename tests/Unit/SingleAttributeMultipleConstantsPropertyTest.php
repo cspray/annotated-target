@@ -4,7 +4,6 @@ namespace Cspray\AnnotatedTarget\Unit;
 
 use Cspray\AnnotatedTargetFixture\ConstantOnly;
 use Cspray\AnnotatedTargetFixture\Fixtures;
-use function Cspray\Typiphy\objectType;
 
 uses(AnnotatedTargetParserTestCase::class);
 
@@ -48,25 +47,25 @@ it('contains second target reflection class constant')
 it('contains first target reflection class constant with attribute')
     ->expect($targets)
     ->toContainTargetClassConstantWithAttribute(
-        Fixtures::singleAttributeMultipleConstantsSingleClass()->fooClass(), 'FOO', objectType(ConstantOnly::class)
+        Fixtures::singleAttributeMultipleConstantsSingleClass()->fooClass(), 'FOO', ConstantOnly::class
     );
 
 it('contains second target reflection class constant with attribute')
     ->expect($targets)
     ->toContainTargetClassConstantWithAttribute(
-        Fixtures::singleAttributeMultipleConstantsSingleClass()->fooClass(), 'BAR', objectType(ConstantOnly::class)
+        Fixtures::singleAttributeMultipleConstantsSingleClass()->fooClass(), 'BAR', ConstantOnly::class
     );
 
 it('contains first target reflection class constant with attribute instance')
     ->expect($targets)
     ->toContainTargetClassConstantWithAttributeInstance(
-        Fixtures::singleAttributeMultipleConstantsSingleClass()->fooClass(), 'FOO', objectType(ConstantOnly::class),
-        fn(ConstantOnly $constantOnly) => $constantOnly->value === 'Mallory'
+        Fixtures::singleAttributeMultipleConstantsSingleClass()->fooClass(), 'FOO', ConstantOnly::class,
+        static fn(ConstantOnly $constantOnly) => $constantOnly->value === 'Mallory'
     );
 
 it('contains second target reflection class constant with attribute instance')
     ->expect($targets)
     ->toContainTargetClassConstantWithAttributeInstance(
-        Fixtures::singleAttributeMultipleConstantsSingleClass()->fooClass(), 'BAR', objectType(ConstantOnly::class),
-        fn(ConstantOnly $constantOnly) => $constantOnly->value === 'Mallory'
+        Fixtures::singleAttributeMultipleConstantsSingleClass()->fooClass(), 'BAR', ConstantOnly::class,
+        static fn(ConstantOnly $constantOnly) => $constantOnly->value === 'Mallory'
     );

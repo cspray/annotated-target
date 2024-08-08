@@ -4,7 +4,6 @@ namespace Cspray\AnnotatedTarget\Unit;
 
 use Cspray\AnnotatedTargetFixture\Fixtures;
 use Cspray\AnnotatedTargetFixture\RepeatablePropertyOnly;
-use function Cspray\Typiphy\objectType;
 
 uses(AnnotatedTargetParserTestCase::class);
 
@@ -41,26 +40,26 @@ it('includes target reflection property')
 it('includes attribute reflection')
     ->expect($targets)
     ->toContainTargetPropertyWithAttribute(
-        Fixtures::repeatablePropertyOnlyAttributeSingleClass()->fooClass(), 'something', objectType(RepeatablePropertyOnly::class)
+        Fixtures::repeatablePropertyOnlyAttributeSingleClass()->fooClass(), 'something', RepeatablePropertyOnly::class
     );
 
 it('includes first attribute instance value')
     ->expect($targets)
     ->toContainTargetPropertyWithAttributeInstance(
-        Fixtures::repeatablePropertyOnlyAttributeSingleClass()->fooClass(), 'something', objectType(RepeatablePropertyOnly::class),
-        fn(RepeatablePropertyOnly $propertyOnly) => $propertyOnly->value === 'Archer'
+        Fixtures::repeatablePropertyOnlyAttributeSingleClass()->fooClass(), 'something', RepeatablePropertyOnly::class,
+        static fn(RepeatablePropertyOnly $propertyOnly) => $propertyOnly->value === 'Archer'
     );
 
 it('includes second attribute instance value')
     ->expect($targets)
     ->toContainTargetPropertyWithAttributeInstance(
-        Fixtures::repeatablePropertyOnlyAttributeSingleClass()->fooClass(), 'something', objectType(RepeatablePropertyOnly::class),
-        fn(RepeatablePropertyOnly $propertyOnly) => $propertyOnly->value === 'Lana'
+        Fixtures::repeatablePropertyOnlyAttributeSingleClass()->fooClass(), 'something', RepeatablePropertyOnly::class,
+        static fn(RepeatablePropertyOnly $propertyOnly) => $propertyOnly->value === 'Lana'
     );
 
 it('includes third attribute instance value')
     ->expect($targets)
     ->toContainTargetPropertyWithAttributeInstance(
-        Fixtures::repeatablePropertyOnlyAttributeSingleClass()->fooClass(), 'something', objectType(RepeatablePropertyOnly::class),
-        fn(RepeatablePropertyOnly $propertyOnly) => $propertyOnly->value === 'Ray'
+        Fixtures::repeatablePropertyOnlyAttributeSingleClass()->fooClass(), 'something', RepeatablePropertyOnly::class,
+        static fn(RepeatablePropertyOnly $propertyOnly) => $propertyOnly->value === 'Ray'
     );

@@ -2,10 +2,8 @@
 
 namespace Cspray\AnnotatedTarget\Unit;
 
-use Cspray\AnnotatedTargetFixture\Fixture;
 use Cspray\AnnotatedTargetFixture\Fixtures;
 use Cspray\AnnotatedTargetFixture\RepeatableConstantOnly;
-use function Cspray\Typiphy\objectType;
 
 uses(AnnotatedTargetParserTestCase::class);
 
@@ -42,19 +40,19 @@ it('contains target reflection class constant')
 it('contains target reflection class constant with attribute')
     ->expect($targets)
     ->toContainTargetClassConstantWithAttribute(
-        Fixtures::repeatableConstantOnlyAttributeSingleClass()->fooClass(), 'FOO_BAR', objectType(RepeatableConstantOnly::class)
+        Fixtures::repeatableConstantOnlyAttributeSingleClass()->fooClass(), 'FOO_BAR', RepeatableConstantOnly::class
     );
 
 it('contains target reflection class constant with first attribute instance')
     ->expect($targets)
     ->toContainTargetClassConstantWithAttributeInstance(
-        Fixtures::repeatableConstantOnlyAttributeSingleClass()->fooClass(), 'FOO_BAR', objectType(RepeatableConstantOnly::class),
-        fn(RepeatableConstantOnly $constantOnly) => $constantOnly->value === 'one'
+        Fixtures::repeatableConstantOnlyAttributeSingleClass()->fooClass(), 'FOO_BAR', RepeatableConstantOnly::class,
+        static fn(RepeatableConstantOnly $constantOnly) => $constantOnly->value === 'one'
     );
 
 it('contains target reflection class constant with second attribute instance')
     ->expect($targets)
     ->toContainTargetClassConstantWithAttributeInstance(
-        Fixtures::repeatableConstantOnlyAttributeSingleClass()->fooClass(), 'FOO_BAR', objectType(RepeatableConstantOnly::class),
-        fn(RepeatableConstantOnly $constantOnly) => $constantOnly->value === 'two'
+        Fixtures::repeatableConstantOnlyAttributeSingleClass()->fooClass(), 'FOO_BAR', RepeatableConstantOnly::class,
+        static fn(RepeatableConstantOnly $constantOnly) => $constantOnly->value === 'two'
     );

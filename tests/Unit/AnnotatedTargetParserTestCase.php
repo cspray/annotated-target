@@ -2,10 +2,10 @@
 
 namespace Cspray\AnnotatedTarget\Unit;
 
+use Cspray\AnnotatedTarget\AnnotatedTargetParserOptions;
 use Cspray\AnnotatedTarget\AnnotatedTargetParserOptionsBuilder;
 use Cspray\AnnotatedTarget\PhpParserAnnotatedTargetParser;
 use Cspray\AnnotatedTargetFixture\Fixture;
-use Cspray\Typiphy\ObjectType;
 use PHPUnit\Framework\TestCase;
 
 abstract class AnnotatedTargetParserTestCase extends TestCase {
@@ -22,11 +22,14 @@ abstract class AnnotatedTargetParserTestCase extends TestCase {
             throw new \BadMethodCallException('Before running any assertions on this test case you must provide a Fixture to load.');
         }
         $paths = array_map(fn(Fixture $fixture) => $fixture->getPath(), $this->fixtures);
-        $builder = AnnotatedTargetParserOptionsBuilder::scanDirectories(...$paths);
+        $options = AnnotatedTargetParserOptions::scanAllAttributes(...$paths);
         if (isset($this->attributes)) {
-            $builder = $builder->filterAttributes(...$this->attributes);
+            $options = AnnotatedTargetParserOptions::scanForSpecificAttributes(
+                $paths,
+                $this->attributes
+            );
         }
-        return iterator_to_array($this->getSubject()->parse($builder->build()));
+        return iterator_to_array($this->getSubject()->parse($options));
     }
 
     public function withFixtures(Fixture... $fixtures) : self {
@@ -34,7 +37,11 @@ abstract class AnnotatedTargetParserTestCase extends TestCase {
         return $this;
     }
 
-    public function withFilteredAttributes(ObjectType... $attributes) : self {
+    /**
+     * @param class-string ...$attributes
+     * @return $this
+     */
+    public function withFilteredAttributes(string... $attributes) : self {
         $this->attributes = $attributes;
         return $this;
     }

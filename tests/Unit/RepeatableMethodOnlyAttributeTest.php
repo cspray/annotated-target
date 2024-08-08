@@ -6,7 +6,6 @@ use Cspray\AnnotatedTarget\Unit\AnnotatedTargetParserTestCase;
 use Cspray\AnnotatedTargetFixture\Fixtures;
 use Cspray\AnnotatedTargetFixture\MethodOnly;
 use Cspray\AnnotatedTargetFixture\RepeatableMethodOnly;
-use function Cspray\Typiphy\objectType;
 
 uses(AnnotatedTargetParserTestCase::class);
 
@@ -43,25 +42,25 @@ it('contains target reflection method')
 it('contains target reflection method and first attribute')
     ->expect($targets)
     ->toContainTargetMethodWithAttribute(
-        Fixtures::repeatableMethodOnlyAttributeSingleClass()->fooClass(), 'theirMethod', objectType(MethodOnly::class)
+        Fixtures::repeatableMethodOnlyAttributeSingleClass()->fooClass(), 'theirMethod', MethodOnly::class
     );
 
 it('contains target reflection method and second attribute')
     ->expect($targets)
     ->toContainTargetMethodWithAttribute(
-        Fixtures::repeatableMethodOnlyAttributeSingleClass()->fooClass(), 'theirMethod', objectType(RepeatableMethodOnly::class)
+        Fixtures::repeatableMethodOnlyAttributeSingleClass()->fooClass(), 'theirMethod', RepeatableMethodOnly::class
     );
 
 it('contains target reflection method and first attribute instance')
     ->expect($targets)
     ->toContainTargetMethodWithAttributeInstance(
-        Fixtures::repeatableMethodOnlyAttributeSingleClass()->fooClass(), 'theirMethod', objectType(MethodOnly::class),
-        fn(MethodOnly $methodOnly) => $methodOnly->value === 'methodOnly'
+        Fixtures::repeatableMethodOnlyAttributeSingleClass()->fooClass(), 'theirMethod', MethodOnly::class,
+        static fn(MethodOnly $methodOnly) => $methodOnly->value === 'methodOnly'
     );
 
 it('contains target reflection method and second attribute instance')
     ->expect($targets)
     ->toContainTargetMethodWithAttributeInstance(
-        Fixtures::repeatableMethodOnlyAttributeSingleClass()->fooClass(), 'theirMethod', objectType(RepeatableMethodOnly::class),
-        fn(RepeatableMethodOnly $methodOnly) => $methodOnly->value === 'repeatableMethodOnly'
+        Fixtures::repeatableMethodOnlyAttributeSingleClass()->fooClass(), 'theirMethod', RepeatableMethodOnly::class,
+        static fn(RepeatableMethodOnly $methodOnly) => $methodOnly->value === 'repeatableMethodOnly'
     );

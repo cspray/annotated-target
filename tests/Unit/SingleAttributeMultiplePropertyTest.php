@@ -4,7 +4,6 @@ namespace Cspray\AnnotatedTarget\Unit;
 
 use Cspray\AnnotatedTargetFixture\Fixtures;
 use Cspray\AnnotatedTargetFixture\PropertyOnly;
-use function Cspray\Typiphy\objectType;
 
 uses(AnnotatedTargetParserTestCase::class);
 
@@ -53,38 +52,38 @@ it('includes target reflection property for third prop')
 it('includes attribute reflection class for first prop')
     ->expect($targets)
     ->toContainTargetPropertyWithAttribute(
-        Fixtures::singleAttributeMultiplePropertiesSingleClass()->fooClass(), 'foo', objectType(PropertyOnly::class)
+        Fixtures::singleAttributeMultiplePropertiesSingleClass()->fooClass(), 'foo', PropertyOnly::class
     );
 
 it('includes attribute reflection class for second prop')
     ->expect($targets)
     ->toContainTargetPropertyWithAttribute(
-        Fixtures::singleAttributeMultiplePropertiesSingleClass()->fooClass(), 'bar', objectType(PropertyOnly::class)
+        Fixtures::singleAttributeMultiplePropertiesSingleClass()->fooClass(), 'bar', PropertyOnly::class
     );
 
 it('includes attribute reflection class for third prop')
     ->expect($targets)
     ->toContainTargetPropertyWithAttribute(
-        Fixtures::singleAttributeMultiplePropertiesSingleClass()->fooClass(), 'baz', objectType(PropertyOnly::class)
+        Fixtures::singleAttributeMultiplePropertiesSingleClass()->fooClass(), 'baz', PropertyOnly::class
     );
 
 it('includes attribute instance value for first prop')
     ->expect($targets)
     ->toContainTargetPropertyWithAttributeInstance(
-        Fixtures::singleAttributeMultiplePropertiesSingleClass()->fooClass(), 'foo', objectType(PropertyOnly::class),
-        fn(PropertyOnly $propertyOnly) => $propertyOnly->value === 'foo-bar-baz'
+        Fixtures::singleAttributeMultiplePropertiesSingleClass()->fooClass(), 'foo', PropertyOnly::class,
+        static fn(PropertyOnly $propertyOnly) => $propertyOnly->value === 'foo-bar-baz'
     );
 
 it('includes attribute instance value for second prop')
     ->expect($targets)
     ->toContainTargetPropertyWithAttributeInstance(
-        Fixtures::singleAttributeMultiplePropertiesSingleClass()->fooClass(), 'bar', objectType(PropertyOnly::class),
-        fn(PropertyOnly $propertyOnly) => $propertyOnly->value === 'foo-bar-baz'
+        Fixtures::singleAttributeMultiplePropertiesSingleClass()->fooClass(), 'bar', PropertyOnly::class,
+        static fn(PropertyOnly $propertyOnly) => $propertyOnly->value === 'foo-bar-baz'
     );
 
 it('includes attribute instance value for third prop')
     ->expect($targets)
     ->toContainTargetPropertyWithAttributeInstance(
-        Fixtures::singleAttributeMultiplePropertiesSingleClass()->fooClass(), 'baz', objectType(PropertyOnly::class),
-        fn(PropertyOnly $propertyOnly) => $propertyOnly->value === 'foo-bar-baz'
+        Fixtures::singleAttributeMultiplePropertiesSingleClass()->fooClass(), 'baz', PropertyOnly::class,
+        static fn(PropertyOnly $propertyOnly) => $propertyOnly->value === 'foo-bar-baz'
     );

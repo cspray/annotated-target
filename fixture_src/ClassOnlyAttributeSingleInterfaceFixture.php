@@ -11,7 +11,7 @@ class ClassOnlyAttributeSingleInterfaceFixture implements Fixture {
         return __DIR__ .'/ClassOnlyAttributeSingleInterface';
     }
 
-    public function fooInterface() : ObjectType {
-        return objectType(ClassOnlyAttributeSingleInterface\FooInterface::class);
+    public function fooInterface() : string {
+        return ClassOnlyAttributeSingleInterface\FooInterface::class;
     }
 }

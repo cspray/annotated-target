@@ -5,12 +5,11 @@ namespace Cspray\AnnotatedTarget\Unit;
 use Cspray\AnnotatedTargetFixture\Fixtures;
 use Cspray\AnnotatedTargetFixture\TargetAttributeImplementation;
 use Cspray\AnnotatedTargetFixture\TargetAttributeInterface;
-use function Cspray\Typiphy\objectType;
 
 uses(AnnotatedTargetParserTestCase::class);
 
 beforeEach()->withFixtures(Fixtures::targetAttributeInterface())
-    ->withFilteredAttributes(objectType(TargetAttributeInterface::class));
+    ->withFilteredAttributes(TargetAttributeInterface::class);
 
 it('counts parsed targets for single class')
     ->expect(fn() => $this->getTargets())
@@ -38,12 +37,12 @@ it('includes target reflection class')
 
 it('includes attribute reflection class')
     ->expect(fn() => $this->getTargets())
-    ->toContainTargetClassWithAttribute(Fixtures::targetAttributeInterface()->targetClass(), objectType(TargetAttributeImplementation::class));
+    ->toContainTargetClassWithAttribute(Fixtures::targetAttributeInterface()->targetClass(), TargetAttributeImplementation::class);
 
 it('includes attribute instance with correct value')
     ->expect(fn() => $this->getTargets())
     ->toContainTargetClassWithAttributeInstance(
         Fixtures::targetAttributeInterface()->targetClass(),
-        objectType(TargetAttributeImplementation::class),
-        fn(TargetAttributeImplementation $classOnly) => $classOnly->value === 'target-attr'
+        TargetAttributeImplementation::class,
+        static fn(TargetAttributeImplementation $classOnly) => $classOnly->value === 'target-attr'
     );

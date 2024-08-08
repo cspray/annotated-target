@@ -5,7 +5,6 @@ namespace Cspray\AnnotatedTarget\Unit;
 use Cspray\AnnotatedTargetFixture\ClassOnly;
 use Cspray\AnnotatedTargetFixture\Fixtures;
 use function Cspray\AnnotatedTarget\parseAttributes;
-use function Cspray\Typiphy\objectType;
 
 $targets = fn() => iterator_to_array(parseAttributes(Fixtures::classOnlyAttributeSingleClass()->getPath()));
 
@@ -35,12 +34,12 @@ it('includes target reflection class')
 
 it('includes attribute reflection class')
     ->expect($targets)
-    ->toContainTargetClassWithAttribute(Fixtures::classOnlyAttributeSingleClass()->fooClass(), objectType(ClassOnly::class));
+    ->toContainTargetClassWithAttribute(Fixtures::classOnlyAttributeSingleClass()->fooClass(), ClassOnly::class);
 
 it('includes attribute instance with correct value')
     ->expect($targets)
     ->toContainTargetClassWithAttributeInstance(
         Fixtures::classOnlyAttributeSingleClass()->fooClass(),
-        objectType(ClassOnly::class),
-        fn(ClassOnly $classOnly) => $classOnly->value === 'single-class-foobar'
+        ClassOnly::class,
+        static fn(ClassOnly $classOnly) => $classOnly->value === 'single-class-foobar'
     );

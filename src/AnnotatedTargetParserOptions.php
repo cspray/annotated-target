@@ -2,18 +2,32 @@
 
 namespace Cspray\AnnotatedTarget;
 
-use Cspray\Typiphy\ObjectType;
-
-interface AnnotatedTargetParserOptions {
+final class AnnotatedTargetParserOptions {
 
     /**
-     * @return list<non-empty-string>
+     * @param non-empty-list<non-empty-string> $sourceDirectories
+     * @param list<class-string> $filteredAttributes
      */
-    public function sourceDirectories() : array;
+    private function __construct(
+        public readonly array $sourceDirectories,
+        public readonly array $filteredAttributes
+    ) {}
 
     /**
-     * @return list<ObjectType>
+     * @param non-empty-string $path
+     * @param non-empty-string ...$additionalPaths
+     * @return self
      */
-    public function attributeTypes() : array;
+    public static function scanAllAttributes(string $path, string... $additionalPaths) : self {
+        return new self(array_values([$path, ...$additionalPaths]), []);
+    }
+
+    /**
+     * @param non-empty-list<non-empty-string> $paths
+     * @param non-empty-list<class-string> $attributes
+     */
+    public static function scanForSpecificAttributes(array $paths, array $attributes) : self {
+        return new self($paths, $attributes);
+    }
 
 }

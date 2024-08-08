@@ -4,7 +4,6 @@ namespace Cspray\AnnotatedTarget\Unit;
 
 use Cspray\AnnotatedTargetFixture\Fixtures;
 use Cspray\AnnotatedTargetFixture\RepeatableClassOnly;
-use function Cspray\Typiphy\objectType;
 
 uses(AnnotatedTargetParserTestCase::class);
 
@@ -40,29 +39,29 @@ it('includes attribute reflection class')
     ->expect($targets)
     ->toContainTargetClassWithAttribute(
         Fixtures::repeatableClassOnlyAttributeSingleClass()->fooClass(),
-        objectType(RepeatableClassOnly::class)
+        RepeatableClassOnly::class
     );
 
 it('includes first attribute value')
     ->expect($targets)
     ->toContainTargetClassWithAttributeInstance(
         Fixtures::repeatableClassOnlyAttributeSingleClass()->fooClass(),
-        objectType(RepeatableClassOnly::class),
-        fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'foo'
+        RepeatableClassOnly::class,
+        static fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'foo'
     );
 
 it('includes second attribute value')
     ->expect($targets)
     ->toContainTargetClassWithAttributeInstance(
         Fixtures::repeatableClassOnlyAttributeSingleClass()->fooClass(),
-        objectType(RepeatableClassOnly::class),
-        fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'bar'
+        RepeatableClassOnly::class,
+        static fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'bar'
     );
 
 it('includes third attribute value')
     ->expect($targets)
     ->toContainTargetClassWithAttributeInstance(
         Fixtures::repeatableClassOnlyAttributeSingleClass()->fooClass(),
-        objectType(RepeatableClassOnly::class),
-        fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'baz'
+        RepeatableClassOnly::class,
+        static fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'baz'
     );

@@ -1,39 +1,16 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Test Case
-|--------------------------------------------------------------------------
-|
-| The closure you provide to your test functions is always bound to a specific PHPUnit test
-| case class. By default, that class is "PHPUnit\Framework\TestCase". Of course, you may
-| need to change it using the "uses()" function to bind a different classes or traits.
-|
-*/
-
-/*
-|--------------------------------------------------------------------------
-| Expectations
-|--------------------------------------------------------------------------
-|
-| When you're writing tests, you often need to check that values meet certain conditions. The
-| "expect()" function gives you access to a set of "expectations" methods that you can use
-| to assert different things. Of course, you may extend the Expectation API at any time.
-|
-*/
-
 use Cspray\AnnotatedTarget\AnnotatedTarget;
-use Cspray\Typiphy\ObjectType;
 use PHPUnit\Framework\Assert;
 
-$checkTargetReflectionClass = function(AnnotatedTarget $target, ObjectType $expectedClass) : bool {
+$checkTargetReflectionClass = function(AnnotatedTarget $target, string $expectedClass) : bool {
     return $target->targetReflection() instanceof ReflectionClass &&
-        $target->targetReflection()->getName() === $expectedClass->name();
+        $target->targetReflection()->getName() === $expectedClass;
 };
 
-$checkTargetReflectionClassConstant = function(AnnotatedTarget $target, ObjectType $expectedClass, string $expectedConst) : bool {
+$checkTargetReflectionClassConstant = function(AnnotatedTarget $target, string $expectedClass, string $expectedConst) : bool {
     return $target->targetReflection() instanceof ReflectionClassConstant &&
-        $target->targetReflection()->getDeclaringClass()->getName() === $expectedClass->name() &&
+        $target->targetReflection()->getDeclaringClass()->getName() === $expectedClass &&
         $target->targetReflection()->getName() === $expectedConst;
 };
 
@@ -48,21 +25,21 @@ $checkTargetReflectionFunctionParameter = function(AnnotatedTarget $target, stri
         $target->targetReflection()->getName() === $expectedParam;
 };
 
-$checkTargetReflectionMethod = function(AnnotatedTarget $target, ObjectType $expectedClass, string $expectedMethod) : bool {
+$checkTargetReflectionMethod = function(AnnotatedTarget $target, string $expectedClass, string $expectedMethod) : bool {
     return $target->targetReflection() instanceof ReflectionMethod &&
-        $target->targetReflection()->getDeclaringClass()->getName() === $expectedClass->name() &&
+        $target->targetReflection()->getDeclaringClass()->getName() === $expectedClass &&
         $target->targetReflection()->getName() === $expectedMethod;
 };
 
-$checkTargetReflectionProperty = function(AnnotatedTarget $target, ObjectType $expectedClass, string $expectedProp) : bool {
+$checkTargetReflectionProperty = function(AnnotatedTarget $target, string $expectedClass, string $expectedProp) : bool {
     return $target->targetReflection() instanceof ReflectionProperty &&
-        $target->targetReflection()->getDeclaringClass()->getName() === $expectedClass->name() &&
+        $target->targetReflection()->getDeclaringClass()->getName() === $expectedClass &&
         $target->targetReflection()->getName() === $expectedProp;
 };
 
-$checkTargetReflectionMethodParameter = function(AnnotatedTarget $target, ObjectType $expectedClass, string $expectedMethod, string $expectedParam) : bool {
+$checkTargetReflectionMethodParameter = function(AnnotatedTarget $target, string $expectedClass, string $expectedMethod, string $expectedParam) : bool {
     return $target->targetReflection() instanceof ReflectionParameter &&
-        $target->targetReflection()->getDeclaringClass()->getName() === $expectedClass->name() &&
+        $target->targetReflection()->getDeclaringClass()->getName() === $expectedClass &&
         $target->targetReflection()->getDeclaringFunction()->getName() === $expectedMethod &&
         $target->targetReflection()->getName() === $expectedParam;
 };
@@ -93,44 +70,44 @@ expect()->extend('toShareAttributeInstance', function() {
     });
 });
 
-expect()->extend('toContainTargetClass', function(ObjectType $expectedClass) use($checkTargetReflectionClass) {
+expect()->extend('toContainTargetClass', function(string $expectedClass) use($checkTargetReflectionClass) {
     return $this->toContainAny(
         fn(AnnotatedTarget $item) => $checkTargetReflectionClass($item, $expectedClass)
     );
 });
 
-expect()->extend('toContainTargetClassWithAttribute', function(ObjectType $expectedClass, ObjectType $expectedAttribute) use($checkTargetReflectionClass) {
+expect()->extend('toContainTargetClassWithAttribute', function(string $expectedClass, string $expectedAttribute) use($checkTargetReflectionClass) {
     return $this->toContainAny(
         fn(AnnotatedTarget $item) => $checkTargetReflectionClass($item, $expectedClass) &&
-            $item->attributeReflection()->getName() === $expectedAttribute->name()
+            $item->attributeReflection()->getName() === $expectedAttribute
     );
 });
 
-expect()->extend('toContainTargetClassWithAttributeInstance', function(ObjectType $expectedClass, ObjectType $expectedAttribute, callable $callable) use($checkTargetReflectionClass) {
+expect()->extend('toContainTargetClassWithAttributeInstance', function(string $expectedClass, string $expectedAttribute, callable $callable) use($checkTargetReflectionClass) {
     return $this->toContainAny(
         fn(AnnotatedTarget $item) => $checkTargetReflectionClass($item, $expectedClass) &&
-            $item->attributeReflection()->getName() === $expectedAttribute->name() &&
+            $item->attributeReflection()->getName() === $expectedAttribute &&
             $callable($item->attributeInstance())
     );
 });
 
-expect()->extend('toContainTargetClassConstant', function(ObjectType $expectedClass, string $expectedConst) use($checkTargetReflectionClassConstant)  {
+expect()->extend('toContainTargetClassConstant', function(string $expectedClass, string $expectedConst) use($checkTargetReflectionClassConstant)  {
     return $this->toContainAny(
         fn(AnnotatedTarget $item) => $checkTargetReflectionClassConstant($item, $expectedClass, $expectedConst)
     );
 });
 
-expect()->extend('toContainTargetClassConstantWithAttribute', function(ObjectType $expectedClass, string $expectedConst, ObjectType $expectedAttribute) use($checkTargetReflectionClassConstant) {
+expect()->extend('toContainTargetClassConstantWithAttribute', function(string $expectedClass, string $expectedConst, string $expectedAttribute) use($checkTargetReflectionClassConstant) {
     return $this->toContainAny(
         fn(AnnotatedTarget $item) => $checkTargetReflectionClassConstant($item, $expectedClass, $expectedConst) &&
-            $item->attributeReflection()->getName() === $expectedAttribute->name()
+            $item->attributeReflection()->getName() === $expectedAttribute
     );
 });
 
-expect()->extend('toContainTargetClassConstantWithAttributeInstance', function(ObjectType $expectedClass, string $expectedConst, ObjectType $expectedAttribute, callable $callable) use($checkTargetReflectionClassConstant) {
+expect()->extend('toContainTargetClassConstantWithAttributeInstance', function(string $expectedClass, string $expectedConst, string $expectedAttribute, callable $callable) use($checkTargetReflectionClassConstant) {
     return $this->toContainAny(
         fn(AnnotatedTarget $item) => $checkTargetReflectionClassConstant($item, $expectedClass, $expectedConst) &&
-            $item->attributeReflection()->getName() === $expectedAttribute->name() &&
+            $item->attributeReflection()->getName() === $expectedAttribute &&
             $callable($item->attributeInstance())
     );
 });
@@ -141,17 +118,17 @@ expect()->extend('toContainTargetFunction', function(string $expectedFunction) u
     );
 });
 
-expect()->extend('toContainTargetFunctionWithAttribute', function(string $expectedFunction, ObjectType $expectedAttribute) use($checkTargetReflectionFunction) {
+expect()->extend('toContainTargetFunctionWithAttribute', function(string $expectedFunction, string $expectedAttribute) use($checkTargetReflectionFunction) {
     return $this->toContainAny(
         fn(AnnotatedTarget $item) => $checkTargetReflectionFunction($item, $expectedFunction) &&
-            $item->attributeReflection()->getName() === $expectedAttribute->name()
+            $item->attributeReflection()->getName() === $expectedAttribute
     );
 });
 
-expect()->extend('toContainTargetFunctionWithAttributeInstance', function(string $expectedFunction, ObjectType $expectedAttribute, callable $callable) use($checkTargetReflectionFunction) {
+expect()->extend('toContainTargetFunctionWithAttributeInstance', function(string $expectedFunction, string $expectedAttribute, callable $callable) use($checkTargetReflectionFunction) {
     return $this->toContainAny(
         fn(AnnotatedTarget $item) => $checkTargetReflectionFunction($item, $expectedFunction) &&
-            $item->attributeReflection()->getName() === $expectedAttribute->name() &&
+            $item->attributeReflection()->getName() === $expectedAttribute &&
             $callable($item->attributeInstance())
     );
 });
@@ -162,80 +139,80 @@ expect()->extend('toContainTargetFunctionParameter', function(string $expectedFu
     );
 });
 
-expect()->extend('toContainTargetFunctionParameterWithAttribute', function(string $expectedFunction, string $expectedParam, ObjectType $expectedAttribute) use($checkTargetReflectionFunctionParameter) {
+expect()->extend('toContainTargetFunctionParameterWithAttribute', function(string $expectedFunction, string $expectedParam, string $expectedAttribute) use($checkTargetReflectionFunctionParameter) {
     return $this->toContainAny(
         fn(AnnotatedTarget $item) => $checkTargetReflectionFunctionParameter($item, $expectedFunction, $expectedParam) &&
-            $item->attributeReflection()->getName() === $expectedAttribute->name()
+            $item->attributeReflection()->getName() === $expectedAttribute
     );
 });
 
-expect()->extend('toContainTargetFunctionParameterWithAttributeInstance', function(string $expectedFunction, string $expectedParam, ObjectType $expectedAttribute, callable $callable) use($checkTargetReflectionFunctionParameter) {
+expect()->extend('toContainTargetFunctionParameterWithAttributeInstance', function(string $expectedFunction, string $expectedParam, string $expectedAttribute, callable $callable) use($checkTargetReflectionFunctionParameter) {
     return $this->toContainAny(
         fn(AnnotatedTarget $item) => $checkTargetReflectionFunctionParameter($item, $expectedFunction, $expectedParam) &&
-            $item->attributeReflection()->getName() === $expectedAttribute->name() &&
+            $item->attributeReflection()->getName() === $expectedAttribute &&
             $callable($item->attributeInstance())
     );
 });
 
-expect()->extend('toContainTargetMethod', function(ObjectType $expectedClass, string $expectedMethod) use($checkTargetReflectionMethod) {
+expect()->extend('toContainTargetMethod', function(string $expectedClass, string $expectedMethod) use($checkTargetReflectionMethod) {
     return $this->toContainAny(
         fn(AnnotatedTarget $item) => $checkTargetReflectionMethod($item, $expectedClass, $expectedMethod)
     );
 });
 
-expect()->extend('toContainTargetMethodWithAttribute', function(ObjectType $expectedClass, string $expectedMethod, ObjectType $expectedAttribute) use($checkTargetReflectionMethod) {
+expect()->extend('toContainTargetMethodWithAttribute', function(string $expectedClass, string $expectedMethod, string $expectedAttribute) use($checkTargetReflectionMethod) {
     return $this->toContainAny(
         fn(AnnotatedTarget $item) => $checkTargetReflectionMethod($item, $expectedClass, $expectedMethod) &&
-            $item->attributeReflection()->getName() === $expectedAttribute->name()
+            $item->attributeReflection()->getName() === $expectedAttribute
     );
 });
 
-expect()->extend('toContainTargetMethodWithAttributeInstance', function(ObjectType $expectedClass, string $expectedMethod, ObjectType $expectedAttribute, callable $callable) use($checkTargetReflectionMethod) {
+expect()->extend('toContainTargetMethodWithAttributeInstance', function(string $expectedClass, string $expectedMethod, string $expectedAttribute, callable $callable) use($checkTargetReflectionMethod) {
     return $this->toContainAny(
         fn(AnnotatedTarget $item) => $checkTargetReflectionMethod($item, $expectedClass, $expectedMethod) &&
-            $item->attributeReflection()->getName() === $expectedAttribute->name() &&
+            $item->attributeReflection()->getName() === $expectedAttribute &&
             $callable($item->attributeInstance())
     );
 });
 
-expect()->extend('toContainTargetProperty', function(ObjectType $expectedClass, string $expectedProp) use($checkTargetReflectionProperty) {
+expect()->extend('toContainTargetProperty', function(string $expectedClass, string $expectedProp) use($checkTargetReflectionProperty) {
     return $this->toContainAny(
         fn(AnnotatedTarget $item) => $checkTargetReflectionProperty($item, $expectedClass, $expectedProp)
     );
 });
 
-expect()->extend('toContainTargetPropertyWithAttribute', function(ObjectType $expectedClass, string $expectedProp, ObjectType $expectedAttribute) use($checkTargetReflectionProperty) {
+expect()->extend('toContainTargetPropertyWithAttribute', function(string $expectedClass, string $expectedProp, string $expectedAttribute) use($checkTargetReflectionProperty) {
     return $this->toContainAny(
         fn(AnnotatedTarget $item) => $checkTargetReflectionProperty($item, $expectedClass, $expectedProp) &&
-            $item->attributeReflection()->getName() === $expectedAttribute->name()
+            $item->attributeReflection()->getName() === $expectedAttribute
     );
 });
 
-expect()->extend('toContainTargetPropertyWithAttributeInstance', function(ObjectType $expectedClass, string $expectedProp, ObjectType $expectedAttribute, callable $callable) use($checkTargetReflectionProperty) {
+expect()->extend('toContainTargetPropertyWithAttributeInstance', function(string $expectedClass, string $expectedProp, string $expectedAttribute, callable $callable) use($checkTargetReflectionProperty) {
     return $this->toContainAny(
         fn(AnnotatedTarget $item) => $checkTargetReflectionProperty($item, $expectedClass, $expectedProp) &&
-            $item->attributeReflection()->getName() === $expectedAttribute->name() &&
+            $item->attributeReflection()->getName() === $expectedAttribute &&
             $callable($item->attributeInstance())
     );
 });
 
-expect()->extend('toContainTargetMethodParameter', function(ObjectType $expectedClass, string $expectedMethod, string $expectedParam) use($checkTargetReflectionMethodParameter) {
+expect()->extend('toContainTargetMethodParameter', function(string $expectedClass, string $expectedMethod, string $expectedParam) use($checkTargetReflectionMethodParameter) {
     return $this->toContainAny(
         fn(AnnotatedTarget $item) => $checkTargetReflectionMethodParameter($item, $expectedClass, $expectedMethod, $expectedParam)
     );
 });
 
-expect()->extend('toContainTargetMethodParameterWithAttribute', function(ObjectType $expectedClass, string $expectedMethod, string $expectedParam, ObjectType $expectedAttribute) use($checkTargetReflectionMethodParameter) {
+expect()->extend('toContainTargetMethodParameterWithAttribute', function(string $expectedClass, string $expectedMethod, string $expectedParam, string $expectedAttribute) use($checkTargetReflectionMethodParameter) {
     return $this->toContainAny(
         fn(AnnotatedTarget $item) => $checkTargetReflectionMethodParameter($item, $expectedClass, $expectedMethod, $expectedParam) &&
-            $item->attributeReflection()->getName() === $expectedAttribute->name()
+            $item->attributeReflection()->getName() === $expectedAttribute
     );
 });
 
-expect()->extend('toContainTargetMethodParameterWithAttributeInstance', function(ObjectType $expectedClass, string $expectedMethod, string $expectedParam, ObjectType $expectedAttribute, callable $callable) use($checkTargetReflectionMethodParameter) {
+expect()->extend('toContainTargetMethodParameterWithAttributeInstance', function(string $expectedClass, string $expectedMethod, string $expectedParam, string $expectedAttribute, callable $callable) use($checkTargetReflectionMethodParameter) {
     return $this->toContainAny(
         fn(AnnotatedTarget $item) => $checkTargetReflectionMethodParameter($item, $expectedClass, $expectedMethod, $expectedParam) &&
-            $item->attributeReflection()->getName() === $expectedAttribute->name() &&
+            $item->attributeReflection()->getName() === $expectedAttribute &&
             $callable($item->attributeInstance())
     );
 });
@@ -261,14 +238,3 @@ expect()->extend('toContainAny', function(callable $callable, string $message = 
     Assert::assertTrue(true);
     return $this;
 });
-
-/*
-|--------------------------------------------------------------------------
-| Functions
-|--------------------------------------------------------------------------
-|
-| While Pest is very powerful out-of-the-box, you may have some testing code specific to your
-| project that you don't want to repeat in every file. Here you can also expose helpers as
-| global functions to help you to reduce the number of lines of code in your test files.
-|
-*/

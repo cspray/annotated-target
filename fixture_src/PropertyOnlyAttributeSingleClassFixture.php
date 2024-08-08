@@ -2,16 +2,13 @@
 
 namespace Cspray\AnnotatedTargetFixture;
 
-use Cspray\Typiphy\ObjectType;
-use function Cspray\Typiphy\objectType;
-
 final class PropertyOnlyAttributeSingleClassFixture implements Fixture {
 
     public function getPath() : string {
         return __DIR__ . '/PropertyOnlyAttributeSingleClass';
     }
 
-    public function fooClass() : ObjectType {
-        return objectType(PropertyOnlyAttributeSingleClass\FooClass::class);
+    public function fooClass() : string {
+        return PropertyOnlyAttributeSingleClass\FooClass::class;
     }
 }

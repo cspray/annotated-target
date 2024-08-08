@@ -2,16 +2,13 @@
 
 namespace Cspray\AnnotatedTargetFixture;
 
-use Cspray\Typiphy\ObjectType;
-use function Cspray\Typiphy\objectType;
-
 final class AliasedAttributeFixture implements Fixture {
 
     public function getPath() : string {
         return __DIR__ . '/AliasedAttribute';
     }
 
-    public function fooClass() : ObjectType {
-        return objectType(AliasedAttribute\FooClass::class);
+    public function fooClass() : string {
+        return AliasedAttribute\FooClass::class;
     }
 }

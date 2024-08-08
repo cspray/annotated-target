@@ -11,8 +11,8 @@ final class ConstantOnlyAttributeGroupSingleClassFixture implements Fixture {
         return __DIR__ . '/ConstantOnlyAttributeGroupSingleClass';
     }
 
-    public function fooClass() : ObjectType {
-        return objectType(ConstantOnlyAttributeGroupSingleClass\FooClass::class);
+    public function fooClass() : string {
+        return ConstantOnlyAttributeGroupSingleClass\FooClass::class;
     }
 
 }

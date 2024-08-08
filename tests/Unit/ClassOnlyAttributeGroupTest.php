@@ -38,43 +38,43 @@ it('includes target reflection class')
 it('includes grouped attribute reflection class')
     ->expect(fn() => $this->getTargets())
     ->toContainTargetClassWithAttribute(
-        Fixtures::classOnlyAttributeGroupSingleClass()->fooClass(), objectType(RepeatableClassOnly::class)
+        Fixtures::classOnlyAttributeGroupSingleClass()->fooClass(), RepeatableClassOnly::class
     );
 
 it('includes single attribute reflection class')
     ->expect(fn() => $this->getTargets())
     ->toContainTargetClassWithAttribute(
-        Fixtures::classOnlyAttributeGroupSingleClass()->fooClass(), objectType(ClassOnly::class)
+        Fixtures::classOnlyAttributeGroupSingleClass()->fooClass(), ClassOnly::class
     );
 
 it('includes attribute instance with correct first value')
     ->expect(fn() => $this->getTargets())
     ->toContainTargetClassWithAttributeInstance(
         Fixtures::classOnlyAttributeGroupSingleClass()->fooClass(),
-        objectType(RepeatableClassOnly::class),
-        fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'foo'
+        RepeatableClassOnly::class,
+        static fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'foo'
     );
 
 it('includes attribute instance with correct second value')
     ->expect(fn() => $this->getTargets())
     ->toContainTargetClassWithAttributeInstance(
         Fixtures::classOnlyAttributeGroupSingleClass()->fooClass(),
-        objectType(RepeatableClassOnly::class),
-        fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'bar'
+        RepeatableClassOnly::class,
+        static fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'bar'
     );
 
 it('includes ungrouped attribute instance with correct value')
     ->expect(fn() => $this->getTargets())
     ->toContainTargetClassWithAttributeInstance(
         Fixtures::classOnlyAttributeGroupSingleClass()->fooClass(),
-        objectType(ClassOnly::class),
-        fn(ClassOnly $classOnly) => $classOnly->value === 'baz'
+        ClassOnly::class,
+        static fn(ClassOnly $classOnly) => $classOnly->value === 'baz'
     );
 
 it('includes attribute instance with correct third value')
     ->expect(fn() => $this->getTargets())
     ->toContainTargetClassWithAttributeInstance(
         Fixtures::classOnlyAttributeGroupSingleClass()->fooClass(),
-        objectType(RepeatableClassOnly::class),
-        fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'qux'
+        RepeatableClassOnly::class,
+        static fn(RepeatableClassOnly $classOnly) => $classOnly->value === 'qux'
     );

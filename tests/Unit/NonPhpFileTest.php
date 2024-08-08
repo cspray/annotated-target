@@ -38,11 +38,11 @@ it('contains target class')
 
 it('contains target class and attribute')
     ->expect($targets)
-    ->toContainTargetClassWithAttribute(Fixtures::nonPhpFile()->fooClass(), objectType(ClassOnly::class));
+    ->toContainTargetClassWithAttribute(Fixtures::nonPhpFile()->fooClass(), ClassOnly::class);
 
 it('contains target class and attribute instance')
     ->expect($targets)
     ->toContainTargetClassWithAttributeInstance(
-        Fixtures::nonPhpFile()->fooClass(), objectType(ClassOnly::class),
-        fn(ClassOnly $classOnly) => $classOnly->value === 'the one'
+        Fixtures::nonPhpFile()->fooClass(), ClassOnly::class,
+        static fn(ClassOnly $classOnly) => $classOnly->value === 'the one'
     );
